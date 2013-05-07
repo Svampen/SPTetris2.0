@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\SDK\SFML-2.0\include&quot;;&quot;C:\Users\Stefan\Documents\Visual Studio 2008\Projects\SPTetris2.0\SPTetris2.0\header&quot;"
+				AdditionalIncludeDirectories="&quot;C:\SDK\SFML-2.0\include&quot;;C:\Users\Stefan\Documents\GitHub\SPTetris2.0\SPTetris2.0\header"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -139,7 +139,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-audio.lib sfml-graphics.lib sfml-main.lib sfml-network.lib sfml-system.lib sfml-window.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;C:\SDK\SFML-2.0\lib&quot;"
+				AdditionalLibraryDirectories="&quot;C:\SDK\SFML-2.0\lib&quot;;&quot;$InputDir/header/&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
