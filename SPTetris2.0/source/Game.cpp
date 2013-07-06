@@ -64,13 +64,24 @@ void Game::loop(RenderWindow &window)
 			update();
 			break;
 		case Clearing:
+			Block** blist;
+			for(int i=0; i<4; i++)
+			{
+				if(mRows[i] != -1)
+				{	
+					blist = mMap->clearRow(mRows[i]);
+					//FIX ME: should be mMap->getWidth() instead of 10
+					mPieceBuilder->freeBlocks(blist, 10);
+					//TODO: Trigger particle system here
+				}
+			}
+			mGameState = Playing;
 			break;
 		}
 
 		draw(window);
 		window.display();
 	}
-	
 }
 
 void Game::handleinput()
