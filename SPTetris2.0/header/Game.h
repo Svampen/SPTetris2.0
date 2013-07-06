@@ -26,12 +26,20 @@ private:
 	PieceBuilder *mPieceBuilder;
 	Map *mMap;
 	
-	
+	enum GameState
+	{
+		Paused     = 0,
+		Playing    = 1,
+		Clearing   = 2,
+		Meny       = 3
+	};
+
 	sf::Clock mClock;
 	Event mEvent;
 	float dt;
 	float maxFps;
 	PieceBuilder::Piece mPiece;
+	GameState mGameState;
 	Vector2f mStart;
 };
 

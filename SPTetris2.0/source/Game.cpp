@@ -26,33 +26,40 @@ void Game::loop(RenderWindow &window)
 {
 	//temp stuff start
 	mStart = mMap->getStartPos();
+	mGameState = Playing;
 	//temp stuff end
 	while (window.isOpen())
     {
-		// Calculate fps
-		dt = mClock.restart().asMilliseconds() / 1000.0f;
-		dt = min(dt, maxFps);
+		switch(mGameState)
+		{
+		case Playing:
+			// Calculate fps
+			dt = mClock.restart().asMilliseconds() / 1000.0f;
+			dt = min(dt, maxFps);
 
-        while (window.pollEvent(mEvent))
-        {
-			switch(mEvent.type)
+			while (window.pollEvent(mEvent))
 			{
-			case Event::Closed:
-				// Delete all resources
-				window.close();
-				break;
+				switch(mEvent.type)
+				{
+				case Event::Closed:
+					// Delete all resources
+					window.close();
+					break;
 
-			case Event::KeyPressed:
-				handleinput();
-				
-			default:
-				break;
+				case Event::KeyPressed:
+					handleinput();
+					
+				default:
+					break;
+				}
 			}
-        }
 
-		update();
+			update();
 
-		draw(window);
+			draw(window);
+
+			break;
+		}
 
 		window.display();
     }
