@@ -74,26 +74,51 @@ bool Map::isValidMove(TetrisPiece &TPiece)
 	Block *b0 = TPiece.getBlock0();
 	Vector2f size = b0->getSize();
 	float width = mWidth * size.x;
+	float height = mHeight * size.y;
 	Vector2f pos0 = b0->getPosition();
-	if(pos0.x + size.x > width || pos0.x < mOrigo.x)
+	if((pos0.x + size.x > width || pos0.x < mOrigo.x) || 
+		(pos0.y + size.y > height))
 		return false;
 
 	Block *b1 = TPiece.getBlock1();
 	Vector2f pos1 = b1->getPosition();
-	if(pos1.x + size.x > width || pos1.x < mOrigo.x)
+	if((pos1.x + size.x > width || pos1.x < mOrigo.x) || 
+		(pos1.y + size.y > height))
 		return false;
 
 	Block *b2 = TPiece.getBlock2();
 	Vector2f pos2 = b2->getPosition();
-	if(pos2.x + size.x > width || pos2.x < mOrigo.x)
+	if((pos2.x + size.x > width || pos2.x < mOrigo.x) || 
+		(pos2.y + size.y > height))
 		return false;
 
 	Block *b3 = TPiece.getBlock3();
 	Vector2f pos3 = b3->getPosition();
-	if(pos3.x + size.x > width || pos3.x < mOrigo.x)
+	if((pos3.x + size.x > width || pos3.x < mOrigo.x) || 
+		(pos3.y + size.y > height))
 		return false;
 
 	return true;
+}
+
+void Map::syncPiece(TetrisPiece &TPiece)
+{
+	Block *b0 = TPiece.getBlock0();
+	Vector2f size = b0->getSize();
+	int i = (int)(b0->getPosition().y / size.y);
+	b0->setPosition(b0->getPosition().x, mOrigo.y + i * size.y);
+
+	Block *b1 = TPiece.getBlock1();
+	i = (int)(b1->getPosition().y / size.y);
+	b1->setPosition(b1->getPosition().x, mOrigo.y + i * size.y);
+
+	Block *b2 = TPiece.getBlock2();
+	i = (int)(b2->getPosition().y / size.y);
+	b2->setPosition(b2->getPosition().x, mOrigo.y + i * size.y);
+
+	Block *b3 = TPiece.getBlock3();
+	i = (int)(b3->getPosition().y / size.y);
+	b3->setPosition(b3->getPosition().x, mOrigo.y + i * size.y);
 }
 
 Vector2f Map::getStartPos()

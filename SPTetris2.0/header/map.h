@@ -13,6 +13,7 @@ public:
 	void draw(RenderWindow *window);
 	void drop(TetrisPiece &TPiece);
 	bool isValidMove(TetrisPiece &TPiece);
+	void syncPiece(TetrisPiece &TPiece);
 	Vector2f getStartPos();
 
 private:
