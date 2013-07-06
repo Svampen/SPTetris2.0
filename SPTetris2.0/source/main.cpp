@@ -3,6 +3,7 @@
 #include "Block.h"
 #include "IPiece.h"
 #include "PieceBuilder.h"
+#include "Map.h"
 
 using namespace sf;
 
@@ -18,8 +19,9 @@ int main()
 	PieceBuilder *mPieceBuilder = new PieceBuilder();
 	PieceBuilder::Piece piece;
 	srand((unsigned int)time(NULL));
-	float startX = 100.0;
-	float startY = 100.0f;
+	float startX = 26.0f * 3.0f;
+	float startY = 26.0f * 1.0f;
+	Map *mMap = new Map(10, 10);
 	//IPiece *b = new IPiece(100.0f, 100.0f);
     while (window.isOpen())
     {
@@ -49,8 +51,10 @@ int main()
 					break;
 				case Keyboard::C:
 					// Release the piece into invdiual blocks before creating a new one
+					// and drop it on to the map
 					if(p != NULL)
 					{
+						mMap->drop(*p);
 						mPieceBuilder->delPiece(p);
 						p = NULL;
 					}
@@ -65,6 +69,8 @@ int main()
 						p->move(TetrisPiece::LEFT);
 						if(!mPieceBuilder->isValidMove(*p))
 							p->revertMove();
+						if(!mMap->isValidMove(*p))
+							p->revertMove();
 					}
 					break;
 				case Keyboard::D:
@@ -73,6 +79,8 @@ int main()
 					{
 						p->move(TetrisPiece::RIGHT);
 						if(!mPieceBuilder->isValidMove(*p))
+							p->revertMove();
+						if(!mMap->isValidMove(*p))
 							p->revertMove();
 					}
 					break;
@@ -86,6 +94,8 @@ int main()
         }
 
 		window.clear(Color::Black);
+		//Draw map first
+		mMap->draw(&window);
 		if(p)
 		{
 			p->draw(&window);

@@ -10,6 +10,7 @@ class Block : public Sprite
 public:
 
 	Block();
+	Block(float X, float Y, const std::string Texture);
 	Block(float X, float Y);
 	~Block();
 	
@@ -41,6 +42,8 @@ public:
 	Vector2f getSize();
 
 private:
+
+	void initBlock(float X, float Y, const std::string Texture);
 
 	int mType;
 	Texture mTex;

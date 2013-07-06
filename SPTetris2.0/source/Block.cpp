@@ -8,28 +8,25 @@
 
 Block::Block()
 {
-	if(!mTex.loadFromFile("gfx/cyan.png"))
-	{
-		//error
-	}
-	setTexture(mTex);
-	FloatRect r = getGlobalBounds();
-	Vector2f size(26.0f, 26.0f);
-	mScaleX = size.x / r.width;
-	mScaleY = size.y / r.height;
-	mX = 0.0f;
-	mY = 0.0f;
-	mOldX = 0.0f;
-	mOldY = 0.0f;
-	// Should be determined by size of resolution
-	Sprite::scale(mScaleX, mScaleY);
-	mCenter = false;
-	mSize = Vector2f(getGlobalBounds().width, getGlobalBounds().height);
+	initBlock(0.0f, 0.0f, "gfx/cyan.png");
 }
 
-Block::Block(float X, float Y) 
+Block::Block(float X, float Y)
 {
-	if(!mTex.loadFromFile("gfx/cyan.png"))
+	initBlock(X, Y, "gfx/cyan.png");
+}
+
+Block::Block(float X, float Y, const std::string Texture) 
+{
+	initBlock(X, Y, Texture);
+}
+Block::~Block()
+{
+}
+
+void Block::initBlock(float X, float Y, const std::string Texture)
+{
+	if(!mTex.loadFromFile(Texture))
 	{
 		//error
 	}
@@ -46,12 +43,9 @@ Block::Block(float X, float Y)
 	Sprite::scale(mScaleX, mScaleY);
 	mCenter = false;
 	mSize = Vector2f(getGlobalBounds().width, getGlobalBounds().height);
-
 }
 
-Block::~Block()
-{
-}
+
 /* Set a absolute position, used for initial position of block
 */
 void Block::setPos(float X, float Y)
