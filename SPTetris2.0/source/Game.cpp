@@ -76,6 +76,7 @@ void Game::loop(RenderWindow &window)
 				}
 			}
 			mRows = NULL;
+			//TODO: Check if anything should fall down before changing game state
 			mGameState = Playing;
 			break;
 		}
