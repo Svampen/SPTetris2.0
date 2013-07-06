@@ -145,14 +145,25 @@ int* Map::checkCompleteRow(TetrisPiece &TPiece)
 	return rows;
 }
 
-int Map::rowComplete(int Row)
+int Map::rowComplete(int row)
 {
 	for(int i=0; i<mWidth; i++)
 	{
-		if(mMap[Row * mWidth + i]->block == NULL)
+		if(mMap[row * mWidth + i]->block == NULL)
 			return -1;
 	}
-	return Row;
+	return row;
+}
+
+Block** Map::clearRow(int row)
+{
+	Block** blist = new Block*[mWidth];
+	for(int i=0; i<mWidth; i++)
+	{
+		blist[i] = mMap[row * mWidth + i]->block;
+		mMap[row * mWidth + i]->block = NULL;
+	}
+	return blist;
 }
 
 Vector2f Map::getStartPos()

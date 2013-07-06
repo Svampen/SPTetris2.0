@@ -15,10 +15,11 @@ public:
 	bool isValidMove(TetrisPiece &TPiece);
 	void syncPiece(TetrisPiece &TPiece);
 	int* checkCompleteRow(TetrisPiece &TPiece);
+	Block** clearRow(int row);
 	Vector2f getStartPos();
 
 private:
-	int rowComplete(int Row);
+	int rowComplete(int row);
 
 	struct MapTile
 	{
