@@ -19,13 +19,17 @@ int main()
 	PieceBuilder *mPieceBuilder = new PieceBuilder();
 	PieceBuilder::Piece piece;
 	srand((unsigned int)time(NULL));
-	float startX = 26.0f * 3.0f;
-	float startY = 26.0f * 1.0f;
-	Map *mMap = new Map(10, 10);
+	Map *mMap = new Map(20, 35);
 	Vector2f start = mMap->getStartPos();
 	//IPiece *b = new IPiece(100.0f, 100.0f);
+	sf::Clock clock;
+	float dt = 0.0f;
+	float maxStep = 1.0f / 30.0f;
+
     while (window.isOpen())
     {
+		dt = clock.restart().asMilliseconds() / 1000.0f;
+		dt = min(dt, maxStep);
         Event event;
         while (window.pollEvent(event))
         {
@@ -94,6 +98,9 @@ int main()
 
         }
 
+		// Update Piece falling
+		if(p != NULL)
+			p->fall(dt);
 		window.clear(Color::Black);
 		//Draw map first
 		mMap->draw(&window);

@@ -8,6 +8,7 @@
 
 TetrisPiece::TetrisPiece()
 {
+	mFallSpeedPerFps = 26.0f;
 }
 TetrisPiece::~TetrisPiece()
 {
@@ -33,6 +34,15 @@ void TetrisPiece::move(DIR Dir)
 		mBlock3->moveX(X);
 		break;
 	}
+}
+
+void TetrisPiece::fall(float dt)
+{
+	float speed = mFallSpeedPerFps * dt;
+	mBlock0->moveY(speed);
+	mBlock1->moveY(speed);
+	mBlock2->moveY(speed);
+	mBlock3->moveY(speed);
 }
 
 void TetrisPiece::revertMove()

@@ -44,6 +44,7 @@ public:
 		return mBlock3;
 	}
 	void move(DIR Dir);
+	void fall(float dt);
 	void revertMove();
 	void setOldRotationStage();
 protected:
@@ -53,6 +54,7 @@ protected:
 	Block *mBlock3;
 	int mRotationStage;
 	int mOldRotationStage;
+	float mFallSpeedPerFps;
 };
 
 #endif
