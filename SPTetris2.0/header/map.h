@@ -13,6 +13,7 @@ public:
 	void draw(RenderWindow *window);
 	void drop(TetrisPiece &TPiece);
 	bool isValidMove(TetrisPiece &TPiece);
+	Vector2f getStartPos();
 
 private:
 	struct MapTile
@@ -27,6 +28,7 @@ private:
 	Vector2f mOrigo; 
 	int mWidth;
 	int mHeight;
+	Vector2f mStart;
 
 };
 #endif

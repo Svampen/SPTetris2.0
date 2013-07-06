@@ -11,7 +11,7 @@ Map::Map(int width, int height)
 	mWidth = width;
 	mHeight = height;
 	mOrigo = Vector2f(0.0f, 0.0f);
-	
+
 	mMap = new MapTile*[mWidth * mHeight];
 
 	for(int i=0;i<mHeight;i++)
@@ -28,6 +28,7 @@ Map::Map(int width, int height)
 			mMap[i*mWidth+j] = m;
 		}
 	}
+	mStart = Vector2f((mWidth * mMap[0]->tile->getSize().x) / 2.0f, mMap[0]->tile->getSize().y * 3);
 }
 
 Map::~Map()
@@ -93,4 +94,9 @@ bool Map::isValidMove(TetrisPiece &TPiece)
 		return false;
 
 	return true;
+}
+
+Vector2f Map::getStartPos()
+{
+	return mStart;
 }
