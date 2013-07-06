@@ -22,6 +22,7 @@ int main()
 	float startX = 26.0f * 3.0f;
 	float startY = 26.0f * 1.0f;
 	Map *mMap = new Map(10, 10);
+	Vector2f start = mMap->getStartPos();
 	//IPiece *b = new IPiece(100.0f, 100.0f);
     while (window.isOpen())
     {
@@ -60,7 +61,7 @@ int main()
 					}
 					// Create a new piece
 					piece = (PieceBuilder::Piece)(rand() % 7);
-					p = &mPieceBuilder->addPiece(piece, startX, startY);
+					p = &mPieceBuilder->addPiece(piece, start.x, start.y);
 					break;
 				case Keyboard::A:
 					// Move Piece to the left
