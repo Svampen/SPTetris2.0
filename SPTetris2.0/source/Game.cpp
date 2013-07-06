@@ -75,6 +75,7 @@ void Game::loop(RenderWindow &window)
 					//TODO: Trigger particle system here
 				}
 			}
+			mRows = NULL;
 			mGameState = Playing;
 			break;
 		}
@@ -108,7 +109,7 @@ void Game::handleinput()
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 		}
-		mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::O, mStart.x, mStart.y);
+		mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
 		break;
 	case Keyboard::C:
 		// Release the piece into invdiual blocks before creating a new one
