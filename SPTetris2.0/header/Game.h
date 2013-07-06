@@ -41,6 +41,7 @@ private:
 	PieceBuilder::Piece mPiece;
 	GameState mGameState;
 	Vector2f mStart;
+	int *mRows;
 };
 
 #endif

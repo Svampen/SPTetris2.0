@@ -9,9 +9,10 @@
 Game::Game()
 {
 	mCurrentPiece = NULL;
+	mRows = NULL;
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(20, 30);
+	mMap = new Map(10, 20);
 
 	dt = 0.0f;
 	maxFps = 1.0f / 30.0f;
@@ -59,6 +60,8 @@ void Game::loop(RenderWindow &window)
 			draw(window);
 
 			break;
+		case Clearing:
+			break;
 		}
 
 		window.display();
@@ -79,6 +82,17 @@ void Game::handleinput()
 				mCurrentPiece->setOldRotationStage();
 			}
 		}
+		break;
+	case Keyboard::Num1:
+		// Release the piece into invdiual blocks before creating a new one
+		// and drop it on to the map
+		if(mCurrentPiece != NULL)
+		{
+			mMap->drop(*mCurrentPiece);
+			mPieceBuilder->delPiece(mCurrentPiece);
+			mCurrentPiece = NULL;
+		}
+		mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::O, mStart.x, mStart.y);
 		break;
 	case Keyboard::C:
 		// Release the piece into invdiual blocks before creating a new one
@@ -144,6 +158,7 @@ void Game::update()
 			mMap->drop(*mCurrentPiece);
 			// Use current piece as a starting point for check if any row has been
 			// completed
+			mRows = mMap->checkCompleteRow(*mCurrentPiece);
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 
@@ -167,9 +182,18 @@ void Game::update()
 			mMap->drop(*mCurrentPiece);
 			// Use current piece as a starting point for check if any row has been
 			// completed
+			mRows = mMap->checkCompleteRow(*mCurrentPiece);
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 			
+		}
+
+		// Check if any row is complete
+		if(mRows != NULL)
+		{
+			for(int i=0;i<4;i++)
+				if(mRows[i] != -1)
+					mGameState = Clearing;
 		}
 	}
 }
