@@ -8,7 +8,7 @@
 
 TetrisPiece::TetrisPiece()
 {
-	mFallSpeedPerFps = 26.0f;
+	mFallSpeedPerFps = 26.0f * 2.0f;
 }
 TetrisPiece::~TetrisPiece()
 {
@@ -17,6 +17,7 @@ void TetrisPiece::move(DIR Dir)
 {
 	Vector2f size = mBlock0->getSize();
 	float X = 0.0f;
+	float Y = 0.0f;
 	switch(Dir)
 	{
 	case LEFT:
@@ -33,6 +34,12 @@ void TetrisPiece::move(DIR Dir)
 		mBlock2->moveX(X);
 		mBlock3->moveX(X);
 		break;
+	case DOWN:
+		Y += size.y * 1;
+		mBlock0->moveY(Y);
+		mBlock1->moveY(Y);
+		mBlock2->moveY(Y);
+		mBlock3->moveY(Y);
 	}
 }
 
