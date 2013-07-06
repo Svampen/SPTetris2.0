@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\Game.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\IPiece.cpp"
 				>
 			</File>
@@ -234,6 +238,10 @@
 			>
 			<File
 				RelativePath=".\header\Block.h"
+				>
+			</File>
+			<File
+				RelativePath=".\header\Game.h"
 				>
 			</File>
 			<File
