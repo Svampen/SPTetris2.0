@@ -19,7 +19,7 @@ Map::Map(int width, int height)
 		for(int j=0; j<mWidth; j++)
 		{
 			MapTile *m = new MapTile();
-			//m->Block = new Block(0.0f, 0.0f);
+			m->block = NULL;
 			m->tile = new Block(0.0f, 0.0f, "gfx/tile.png");
 			float x = ((Block*)m->tile)->getSize().x * j;
 			float y = ((Block*)m->tile)->getSize().y * i;
@@ -119,6 +119,40 @@ void Map::syncPiece(TetrisPiece &TPiece)
 	Block *b3 = TPiece.getBlock3();
 	i = (int)(b3->getPosition().y / size.y);
 	b3->setPosition(b3->getPosition().x, mOrigo.y + i * size.y);
+}
+
+int* Map::checkCompleteRow(TetrisPiece &TPiece)
+{
+	Vector2f pos0 = TPiece.getBlock0()->getPosition();
+	Vector2f pos1 = TPiece.getBlock1()->getPosition();
+	Vector2f pos2 = TPiece.getBlock2()->getPosition();
+	Vector2f pos3 = TPiece.getBlock3()->getPosition();
+
+	Vector2f size = TPiece.getBlock0()->getSize();
+
+	int row0 = (int)((pos0.y / size.y) * mWidth + (pos0.x / size.x)) / mHeight;
+	int row1 = (int)((pos1.y / size.y) * mWidth + (pos1.x / size.x)) / mHeight;
+	int row2 = (int)((pos2.y / size.y) * mWidth + (pos2.x / size.x)) / mHeight;
+	int row3 = (int)((pos3.y / size.y) * mWidth + (pos3.x / size.x)) / mHeight;
+
+	int *rows = new int[4];
+
+	rows[0] = rowComplete(row0);
+	rows[1] = rowComplete(row1);
+	rows[2] = rowComplete(row2);
+	rows[3] = rowComplete(row3);
+
+	return rows;
+}
+
+int Map::rowComplete(int Row)
+{
+	for(int i=0; i<mWidth; i++)
+	{
+		if(mMap[Row * mWidth + i]->block == NULL)
+			return -1;
+	}
+	return Row;
 }
 
 Vector2f Map::getStartPos()

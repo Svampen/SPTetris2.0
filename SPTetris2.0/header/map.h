@@ -14,9 +14,12 @@ public:
 	void drop(TetrisPiece &TPiece);
 	bool isValidMove(TetrisPiece &TPiece);
 	void syncPiece(TetrisPiece &TPiece);
+	int* checkCompleteRow(TetrisPiece &TPiece);
 	Vector2f getStartPos();
 
 private:
+	int rowComplete(int Row);
+
 	struct MapTile
 	{
 		// Drawing background
