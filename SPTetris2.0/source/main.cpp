@@ -19,7 +19,7 @@ int main()
 	PieceBuilder *mPieceBuilder = new PieceBuilder();
 	PieceBuilder::Piece piece;
 	srand((unsigned int)time(NULL));
-	Map *mMap = new Map(20, 35);
+	Map *mMap = new Map(20, 20);
 	Vector2f start = mMap->getStartPos();
 	//IPiece *b = new IPiece(100.0f, 100.0f);
 	sf::Clock clock;
@@ -100,7 +100,51 @@ int main()
 
 		// Update Piece falling
 		if(p != NULL)
+		{
 			p->fall(dt);
+			// Is the piece colliding with another block?
+			if(!mPieceBuilder->isValidMove(*p))
+			{
+				// Move back to old position and sync with map
+				p->revertMove();
+				mMap->syncPiece(*p);
+				// Move piece one tile at a time until collision
+				while(mPieceBuilder->isValidMove(*p))
+				{
+					p->move(TetrisPiece::DOWN);
+				}
+				// use old pos
+				p->revertMove();
+				// Release the piece into invdiual blocks before creating a new one
+				// and drop it on to the map
+				mMap->drop(*p);
+				mPieceBuilder->delPiece(p);
+				p = NULL;
+
+				// Map should check if rows have be come complete
+			}
+			// Is the piece below the map?
+			else if(!mMap->isValidMove(*p))
+			{
+				// Move back to last position and sync with map
+				p->revertMove();
+				mMap->syncPiece(*p);
+				// move piece one tile at a time until last outside map then
+				while(mMap->isValidMove(*p))
+				{
+					p->move(TetrisPiece::DOWN);
+				}
+				// use old pos
+				p->revertMove();
+				// Release the piece into invdiual blocks before creating a new one
+				// and drop it on to the map
+				mMap->drop(*p);
+				mPieceBuilder->delPiece(p);
+				p = NULL;
+				
+			}
+
+		}
 		window.clear(Color::Black);
 		//Draw map first
 		mMap->draw(&window);
