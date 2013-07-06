@@ -9,7 +9,8 @@ public:
 	enum DIR
 	{
 		LEFT = 0,
-		RIGHT = 1
+		RIGHT = 1,
+		DOWN = 2
 	};
 	TetrisPiece();
 	~TetrisPiece();
