@@ -12,7 +12,7 @@ Game::Game()
 	mRows = NULL;
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(10, 20);
+	mMap = new Map(10, 10);
 
 	dt = 0.0f;
 	maxFps = 1.0f / 30.0f;
@@ -31,41 +31,46 @@ void Game::loop(RenderWindow &window)
 	//temp stuff end
 	while (window.isOpen())
     {
+		// Calculate delta time
+		dt = mClock.restart().asSeconds();
+		dt = min(dt, maxFps);
+
+		while (window.pollEvent(mEvent))
+		{
+			switch(mEvent.type)
+			{
+			case Event::Closed:
+				// Delete all resources
+				window.close();
+				break;
+
+			case Event::KeyPressed:
+				switch(mGameState)
+				{
+				case Playing:
+					handleinput();
+					break;
+				case Clearing:
+					break;
+				}
+			default:
+				break;
+			}
+		}
+
 		switch(mGameState)
 		{
 		case Playing:
-			// Calculate fps
-			dt = mClock.restart().asMilliseconds() / 1000.0f;
-			dt = min(dt, maxFps);
-
-			while (window.pollEvent(mEvent))
-			{
-				switch(mEvent.type)
-				{
-				case Event::Closed:
-					// Delete all resources
-					window.close();
-					break;
-
-				case Event::KeyPressed:
-					handleinput();
-					
-				default:
-					break;
-				}
-			}
-
 			update();
-
-			draw(window);
-
 			break;
 		case Clearing:
 			break;
 		}
 
+		draw(window);
 		window.display();
-    }
+	}
+	
 }
 
 void Game::handleinput()
