@@ -149,7 +149,21 @@ bool PieceBuilder::isValidMove(TetrisPiece &TPiece)
 	}
 	return true;
 }
-
+void PieceBuilder::freeBlocks(Block **blist, int length)
+{
+	for(int i=0; i<mBlockPool->getSize(); i++)
+	{
+		BlockPool *bp = mBlockPool->getAt(i);
+		for(int j=0; j<length; j++)
+		{
+			if(bp->mBlock == blist[j])
+			{
+				bp->free = true;
+				break;
+			}
+		}
+	}
+}
 void PieceBuilder::freeBlock(Block *block)
 {
 	for(int i=0; i<mBlockPool->getSize(); i++)
