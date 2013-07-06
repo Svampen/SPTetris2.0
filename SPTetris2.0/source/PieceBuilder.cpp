@@ -149,6 +149,20 @@ bool PieceBuilder::isValidMove(TetrisPiece &TPiece)
 	}
 	return true;
 }
+
+void PieceBuilder::freeBlock(Block *block)
+{
+	for(int i=0; i<mBlockPool->getSize(); i++)
+	{
+		BlockPool *bp = mBlockPool->getAt(i);
+		if(bp->mBlock == block)
+		{
+			bp->free = true;
+			break;
+		}
+	}
+}
+
 void PieceBuilder::onLostDevice()
 {
 	for(int i=0; i<mBlockPool->getSize(); i++)

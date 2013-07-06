@@ -42,6 +42,7 @@ public:
 	void delPiece(TetrisPiece *TPiece);
 	void draw(RenderWindow *window);
 	bool isValidMove(TetrisPiece &TPiece);
+	void freeBlock(Block *block);
 	void onLostDevice();
 	void onResetDevice();
 
