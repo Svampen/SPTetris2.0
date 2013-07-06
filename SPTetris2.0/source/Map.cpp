@@ -106,19 +106,19 @@ void Map::syncPiece(TetrisPiece &TPiece)
 	Block *b0 = TPiece.getBlock0();
 	Vector2f size = b0->getSize();
 	int i = (int)(b0->getPosition().y / size.y);
-	b0->setPosition(b0->getPosition().x, mOrigo.y + i * size.y);
+	b0->setPos(b0->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b1 = TPiece.getBlock1();
 	i = (int)(b1->getPosition().y / size.y);
-	b1->setPosition(b1->getPosition().x, mOrigo.y + i * size.y);
+	b1->setPos(b1->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b2 = TPiece.getBlock2();
 	i = (int)(b2->getPosition().y / size.y);
-	b2->setPosition(b2->getPosition().x, mOrigo.y + i * size.y);
+	b2->setPos(b2->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b3 = TPiece.getBlock3();
 	i = (int)(b3->getPosition().y / size.y);
-	b3->setPosition(b3->getPosition().x, mOrigo.y + i * size.y);
+	b3->setPos(b3->getPosition().x, mOrigo.y + i * size.y);
 }
 
 int* Map::checkCompleteRow(TetrisPiece &TPiece)
