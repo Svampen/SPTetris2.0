@@ -19,7 +19,7 @@ private:
 
 	void handleinput();
 	void update();
-	void draw();
+	void draw(RenderWindow &window);
 
 
 	TetrisPiece *mCurrentPiece;
@@ -28,9 +28,11 @@ private:
 	
 	
 	sf::Clock mClock;
+	Event mEvent;
 	float dt;
 	float maxFps;
 	PieceBuilder::Piece mPiece;
+	Vector2f mStart;
 };
 
 #endif
