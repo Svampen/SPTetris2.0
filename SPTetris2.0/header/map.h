@@ -18,6 +18,14 @@ public:
 	Block** clearRow(int row);
 	void moveBlocks(int startRow);
 	Vector2f getStartPos();
+	int getWidth()
+	{
+		return mWidth;
+	}
+	int getHeight()
+	{
+		return mHeight;
+	}
 
 private:
 	int rowComplete(int row);
