@@ -65,83 +65,10 @@ void Game::loop(RenderWindow &window)
 			update();
 			break;
 		case Clearing:
-			Block** blist;
-			for(int i=0; i<4; i++)
-			{
-				if(mRows->rows[i] != -1)
-				{	
-					blist = mMap->clearRow(mRows->rows[i]);
-					//FIX ME: should be mMap->getWidth() instead of 10
-					mPieceBuilder->freeBlocks(blist, 10);
-					//TODO: Trigger particle system here
-				}
-			}
-			droppingClock.restart();
-			mGameState = Dropping;
+			clearing();
 			break;
 		case Dropping:
-			if(mRows->rows == NULL)
-			{
-				mGameState = Playing;
-			}
-			else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
-			{
-				//Move each row down 1 row per second
-				if(droppingClock.getElapsedTime().asMilliseconds() > 500)
-				{
-					int row = -1;
-					bool exists;
-					int prevEmptyRow = -1;
-					for(int i=mRows->deepest; i>=0; i--)
-					{
-						exists = false;
-						for(int j=0; j<4; j++)
-						{
-							// Check if row exists as a cleared row
-							if(i == mRows->rows[j])
-							{
-								exists = true;
-								prevEmptyRow = j;
-								break;
-							}
-
-						}
-						// If current row isn't cleared and
-						// no other row has been set as deepest noncleared row
-						// then set it as such
-						if(!exists && row == -1)
-						{
-							if(prevEmptyRow != -1)
-								// Change status on previously empty
-								// row to not empty anymore as it will be
-								// filled with blocks
-								mRows->rows[prevEmptyRow] = -1;
-							row = i;
-						}
-						// If current row is empty and a noncleared
-						// row has been set then this row has moved 
-						// down a row
-						else if(exists && row != -1)
-						{
-							mRows->rows[prevEmptyRow]--;
-						}
-					}
-					if(row != -1)
-					{
-						mMap->moveBlocks(row);
-						mRows->deepest--;
-						mRows->nrOfRows--;
-						droppingClock.restart();
-					}
-				}
-			}
-			else
-			{
-				mGameState = Playing;
-				mRows->rows = NULL;
-				mRows->deepest = -1;
-				mRows->nrOfRows = 0;
-			}
+			dropping();
 			break;
 		}
 
@@ -305,4 +232,88 @@ void Game::checkRows()
 	}
 	if(mRows->nrOfRows > 0)
 		mGameState = Clearing;
+}
+
+void Game::clearing()
+{
+	Block** blist;
+	for(int i=0; i<4; i++)
+	{
+		if(mRows->rows[i] != -1)
+		{	
+			blist = mMap->clearRow(mRows->rows[i]);
+			//FIX ME: should be mMap->getWidth() instead of 10
+			mPieceBuilder->freeBlocks(blist, 10);
+			//TODO: Trigger particle system here
+		}
+	}
+	droppingClock.restart();
+	mGameState = Dropping;
+}
+
+void Game::dropping()
+{
+	if(mRows->rows == NULL)
+	{
+		mGameState = Playing;
+	}
+	else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
+	{
+		//Move each row down 1 row per second
+		if(droppingClock.getElapsedTime().asMilliseconds() > 500)
+		{
+			int moveRowNr = -1;
+			bool clearedRow;
+			int prevEmptyRow = -1;
+			for(int i=mRows->deepest; i>=0; i--)
+			{
+				clearedRow = false;
+				for(int j=0; j<4; j++)
+				{
+					// Check if row exists as a cleared row
+					if(i == mRows->rows[j])
+					{
+						clearedRow = true;
+						prevEmptyRow = j;
+						break;
+					}
+
+				}
+				// If current row isn't cleared and
+				// no other row has been set as deepest noncleared row
+				// then set it as such
+				if(!clearedRow && moveRowNr == -1)
+				{
+					if(prevEmptyRow != -1)
+						// Change status on previously empty
+						// row to not empty anymore as it will be
+						// filled with blocks
+						mRows->rows[prevEmptyRow] = -1;
+					moveRowNr = i;
+				}
+				// If current row is empty and a noncleared
+				// row has been set then this row has moved 
+				// down a row
+				else if(clearedRow && moveRowNr != -1)
+				{
+					mRows->rows[prevEmptyRow]--;
+				}
+			}
+			if(moveRowNr != -1)
+			{
+				mMap->moveBlocks(moveRowNr);
+				mRows->deepest--;
+				mRows->nrOfRows--;
+				droppingClock.restart();
+			}
+		}
+	}
+	else
+	{
+		// Go back to playing the game
+		mGameState = Playing;
+		mRows->rows = NULL;
+		mRows->deepest = -1;
+		mRows->nrOfRows = 0;
+	}
 }

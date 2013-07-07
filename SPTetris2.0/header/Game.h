@@ -21,6 +21,8 @@ private:
 	void update();
 	void draw(RenderWindow &window);
 	void checkRows();
+	void clearing();
+	void dropping();
 
 
 	TetrisPiece *mCurrentPiece;
