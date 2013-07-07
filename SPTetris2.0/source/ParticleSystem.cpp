@@ -1,5 +1,16 @@
 #include "ParticleSystem.h"
 
+ParticleSystem::ParticleSystem(unsigned int count, float lifeTime)
+{
+	m_particles = std::vector<Particle>(count);
+	m_vertices = sf::VertexArray(sf::Points, count);
+    m_lifetime = sf::Time(sf::seconds(lifeTime));
+    m_emitter = sf::Vector2f(0, 0);
+}
+ParticleSystem::~ParticleSystem()
+{
+}
+
 void ParticleSystem::setEmitter(sf::Vector2f position)
 {
 	m_emitter = position;

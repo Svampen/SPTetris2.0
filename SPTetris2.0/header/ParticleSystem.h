@@ -7,14 +7,9 @@
 class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 public:
-
-    ParticleSystem(unsigned int count) :
-    m_particles(count),
-    m_vertices(sf::Points, count),
-    m_lifetime(sf::seconds(3)),
-    m_emitter(0, 0)
-    {
-    }
+	ParticleSystem(unsigned int count, float lifeTime);
+	~ParticleSystem();
+    
 
 	void setEmitter(sf::Vector2f position);
 	void update(sf::Time elapsed);
