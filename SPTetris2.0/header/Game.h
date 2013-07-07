@@ -17,7 +17,7 @@ public:
 
 private:
 
-	void handleinput();
+	void handleinput(bool pressed);
 	void update();
 	void draw(RenderWindow &window);
 	void checkRows();
@@ -37,6 +37,8 @@ private:
 		Dropping   = 3,
 		Meny       = 4
 	};
+
+	float mSpeed;
 
 	sf::Clock mClock;
 	Event mEvent;

@@ -12,11 +12,12 @@ Game::Game()
 	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(10, 10);
+	mMap = new Map(10, 25);
 
 	dt = 0.0f;
 	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
+	mSpeed = 1.0f;
 }
 
 Game::~Game()
@@ -49,11 +50,22 @@ void Game::loop(RenderWindow &window)
 				switch(mGameState)
 				{
 				case Playing:
-					handleinput();
+					handleinput(true);
 					break;
 				case Clearing:
 					break;
 				}
+				break;
+			case Event::KeyReleased:
+				switch(mGameState)
+				{
+				case Playing:
+					handleinput(false);
+					break;
+				case Clearing:
+					break;
+				}
+				break;
 			default:
 				break;
 			}
@@ -77,11 +89,14 @@ void Game::loop(RenderWindow &window)
 	}
 }
 
-void Game::handleinput()
+void Game::handleinput(bool pressed)
 {
-	switch(mEvent.key.code)
+	bool released = false;
+	if(!pressed)
+		released = true;
+
+	if(mEvent.key.code == Keyboard::Space && pressed)
 	{
-	case Keyboard::Space:
 		if(mCurrentPiece != NULL)
 		{
 			mCurrentPiece->rotate();
@@ -90,9 +105,11 @@ void Game::handleinput()
 				mCurrentPiece->revertMove();
 				mCurrentPiece->setOldRotationStage();
 			}
+			//TODO: check against map boundaries
 		}
-		break;
-	case Keyboard::Num1:
+	}
+	else if(mEvent.key.code == Keyboard::Num1 && pressed)
+	{
 		// Release the piece into invdiual blocks before creating a new one
 		// and drop it on to the map
 		if(mCurrentPiece != NULL)
@@ -102,8 +119,10 @@ void Game::handleinput()
 			mCurrentPiece = NULL;
 		}
 		mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
-		break;
-	case Keyboard::C:
+		mCurrentPiece->setSpeed(mSpeed);
+	}
+	else if(mEvent.key.code == Keyboard::C && pressed)
+	{
 		// Release the piece into invdiual blocks before creating a new one
 		// and drop it on to the map
 		if(mCurrentPiece != NULL)
@@ -115,8 +134,10 @@ void Game::handleinput()
 		// Create a new piece
 		mPiece = (PieceBuilder::Piece)(rand() % 7);
 		mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-		break;
-	case Keyboard::A:
+		mCurrentPiece->setSpeed(mSpeed);
+	}
+	else if(mEvent.key.code == Keyboard::A && pressed)
+	{
 		// Move Piece to the left
 		if(mCurrentPiece != NULL)
 		{
@@ -126,8 +147,9 @@ void Game::handleinput()
 			if(!mMap->isValidMove(*mCurrentPiece))
 				mCurrentPiece->revertMove();
 		}
-		break;
-	case Keyboard::D:
+	}
+	else if(mEvent.key.code == Keyboard::D && pressed)
+	{
 		// Move Piece to the right
 		if(mCurrentPiece != NULL)
 		{
@@ -137,9 +159,25 @@ void Game::handleinput()
 			if(!mMap->isValidMove(*mCurrentPiece))
 				mCurrentPiece->revertMove();
 		}
-		break;
-	default:
-		break;
+	}
+	else if(mEvent.key.code == Keyboard::S && pressed)
+	{
+		// Move Piece faster downward
+		if(mCurrentPiece != NULL && mSpeed != 10.0f)
+		{
+			mSpeed = 10.0f;
+			mCurrentPiece->setSpeed(mSpeed);
+		}
+	}
+	else if(mEvent.key.code == Keyboard::S && released)
+	{
+		if(mCurrentPiece != NULL && mSpeed == 10.0f)
+		{
+			mSpeed = 1.0f;
+			mCurrentPiece->setSpeed(mSpeed);
+		}
+		else if (mCurrentPiece == NULL)
+			mSpeed = 1.0f;
 	}
 }
 
@@ -200,9 +238,7 @@ void Game::update()
 				mRows->cleared[i] = false;
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
-			
 		}
-
 		// Check if any row is complete
 		if(mRows->rows != NULL)
 			checkRows();
@@ -238,6 +274,8 @@ void Game::checkRows()
 	}
 	if(mRows->nrOfRows > 0)
 		mGameState = Clearing;
+	else
+		mRows->rows = NULL;
 }
 
 void Game::clearing()
