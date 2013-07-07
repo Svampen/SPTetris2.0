@@ -208,10 +208,7 @@ void Game::update()
 
 		// Check if any row is complete
 		if(mRows->rows != NULL)
-		{
 			checkRows();
-			
-		}
 	}
 }
 
