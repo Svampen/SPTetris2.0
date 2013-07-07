@@ -43,6 +43,7 @@ public:
 	void fall(float dt);
 	void revertMove();
 	void setOldRotationStage();
+	void setSpeed(float speed);
 protected:
 	Block *mBlock0;
 	Block *mBlock1;
@@ -50,7 +51,7 @@ protected:
 	Block *mBlock3;
 	int mRotationStage;
 	int mOldRotationStage;
-	float mFallSpeedPerFps;
+	float mFallSpeed;
 };
 
 #endif

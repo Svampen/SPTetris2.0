@@ -8,7 +8,7 @@
 
 TetrisPiece::TetrisPiece()
 {
-	mFallSpeedPerFps = 26.0f * 2.0f;
+	mFallSpeed = mBlock0->getSize().y;
 }
 TetrisPiece::~TetrisPiece()
 {
@@ -23,7 +23,7 @@ void TetrisPiece::move(Block::DIR Dir)
 
 void TetrisPiece::fall(float dt)
 {
-	float speed = mFallSpeedPerFps * dt;
+	float speed = mFallSpeed * dt;
 	mBlock0->moveY(speed);
 	mBlock1->moveY(speed);
 	mBlock2->moveY(speed);
@@ -41,4 +41,9 @@ void TetrisPiece::revertMove()
 void TetrisPiece::setOldRotationStage()
 {
 	mRotationStage = mOldRotationStage;
+}
+
+void TetrisPiece::setSpeed(float speed)
+{
+	mFallSpeed = mBlock0->getSize().y * speed;
 }
