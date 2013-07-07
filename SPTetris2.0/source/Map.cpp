@@ -171,7 +171,7 @@ Vector2f Map::getStartPos()
 	return mStart;
 }
 
-void Map::dropBlocks(int startRow)
+void Map::moveBlocks(int startRow)
 {
 	for(int i=startRow; i>0; i--)
 	{

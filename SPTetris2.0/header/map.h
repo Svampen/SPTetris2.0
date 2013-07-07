@@ -16,7 +16,7 @@ public:
 	void syncPiece(TetrisPiece &TPiece);
 	int* checkCompleteRow(TetrisPiece &TPiece);
 	Block** clearRow(int row);
-	void dropBlocks(int startRow);
+	void moveBlocks(int startRow);
 	Vector2f getStartPos();
 
 private:
