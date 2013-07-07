@@ -15,6 +15,7 @@ Game::Game()
 	mMap = new Map(10, 10);
 
 	dt = 0.0f;
+	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
 }
 
@@ -85,13 +86,53 @@ void Game::loop(RenderWindow &window)
 			}
 			else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
 			{
+				//Move each row down 1 row per second
 				if(droppingClock.getElapsedTime().asMilliseconds() > 500)
 				{
-					//Move each row down 1 row per second
-					mMap->moveBlocks(mRows->deepest - 1);
-					mRows->deepest--;
-					mRows->nrOfRows--;
-					droppingClock.restart();
+					int row = -1;
+					bool exists;
+					int prevEmptyRow = -1;
+					for(int i=mRows->deepest; i>=0; i--)
+					{
+						exists = false;
+						for(int j=0; j<4; j++)
+						{
+							// Check if row exists as a cleared row
+							if(i == mRows->rows[j])
+							{
+								exists = true;
+								prevEmptyRow = j;
+								break;
+							}
+
+						}
+						// If current row isn't cleared and
+						// no other row has been set as deepest noncleared row
+						// then set it as such
+						if(!exists && row == -1)
+						{
+							if(prevEmptyRow != -1)
+								// Change status on previously empty
+								// row to not empty anymore as it will be
+								// filled with blocks
+								mRows->rows[prevEmptyRow] = -1;
+							row = i;
+						}
+						// If current row is empty and a noncleared
+						// row has been set then this row has moved 
+						// down a row
+						else if(exists && row != -1)
+						{
+							mRows->rows[prevEmptyRow]--;
+						}
+					}
+					if(row != -1)
+					{
+						mMap->moveBlocks(row);
+						mRows->deepest--;
+						mRows->nrOfRows--;
+						droppingClock.restart();
+					}
 				}
 			}
 			else
