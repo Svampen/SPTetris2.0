@@ -75,9 +75,32 @@ void Game::loop(RenderWindow &window)
 					//TODO: Trigger particle system here
 				}
 			}
-			mRows = NULL;
-			//TODO: Check if anything should fall down before changing game state
-			mGameState = Playing;
+			droppingClock.restart();
+			mGameState = Dropping;
+			break;
+		case Dropping:
+			if(mRows->rows == NULL)
+			{
+				mGameState = Playing;
+			}
+			else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
+			{
+				if(droppingClock.getElapsedTime().asMilliseconds() > 500)
+				{
+					//Move each row down 1 row per second
+					mMap->moveBlocks(mRows->deepest - 1);
+					mRows->deepest--;
+					mRows->nrOfRows--;
+					droppingClock.restart();
+				}
+			}
+			else
+			{
+				mGameState = Playing;
+				mRows->rows = NULL;
+				mRows->deepest = -1;
+				mRows->nrOfRows = 0;
+			}
 			break;
 		}
 

@@ -32,7 +32,8 @@ private:
 		Paused     = 0,
 		Playing    = 1,
 		Clearing   = 2,
-		Meny       = 3
+		Dropping   = 3,
+		Meny       = 4
 	};
 
 	sf::Clock mClock;
@@ -49,6 +50,7 @@ private:
 		int deepest;
 	};
 	Rows *mRows;
+	sf::Clock droppingClock;
 };
 
 #endif
