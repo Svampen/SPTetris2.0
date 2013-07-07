@@ -65,6 +65,26 @@ void Block::move(float X, float Y)
 	Sprite::setPosition(mX, mY);
 }
 
+void Block::move(DIR Dir)
+{
+	float X = 0.0f;
+	float Y = 0.0f;
+	switch(Dir)
+	{
+	case LEFT:
+		X -= (mSize.x * 1);
+		moveX(X);
+		break;
+	case RIGHT:
+		X += mSize.x * 1;
+		moveX(X);
+		break;
+	case DOWN:
+		Y += mSize.y * 1;
+		moveY(Y);
+	}
+}
+
 void Block::moveX(float X)
 {
 	mOldX = mX;

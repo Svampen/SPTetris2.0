@@ -13,34 +13,12 @@ TetrisPiece::TetrisPiece()
 TetrisPiece::~TetrisPiece()
 {
 }
-void TetrisPiece::move(DIR Dir)
+void TetrisPiece::move(Block::DIR Dir)
 {
-	Vector2f size = mBlock0->getSize();
-	float X = 0.0f;
-	float Y = 0.0f;
-	switch(Dir)
-	{
-	case LEFT:
-		X -= (size.x * 1);
-		mBlock0->moveX(X);
-		mBlock1->moveX(X);
-		mBlock2->moveX(X);
-		mBlock3->moveX(X);
-		break;
-	case RIGHT:
-		X += size.x * 1;
-		mBlock0->moveX(X);
-		mBlock1->moveX(X);
-		mBlock2->moveX(X);
-		mBlock3->moveX(X);
-		break;
-	case DOWN:
-		Y += size.y * 1;
-		mBlock0->moveY(Y);
-		mBlock1->moveY(Y);
-		mBlock2->moveY(Y);
-		mBlock3->moveY(Y);
-	}
+	mBlock0->move(Dir);
+	mBlock1->move(Dir);
+	mBlock2->move(Dir);
+	mBlock3->move(Dir);
 }
 
 void TetrisPiece::fall(float dt)

@@ -6,12 +6,7 @@
 class TetrisPiece
 {
 public:
-	enum DIR
-	{
-		LEFT = 0,
-		RIGHT = 1,
-		DOWN = 2
-	};
+	
 	TetrisPiece();
 	~TetrisPiece();
 	// Virtual function that all inherited classes needs to implement
@@ -44,7 +39,7 @@ public:
 	{
 		return mBlock3;
 	}
-	void move(DIR Dir);
+	void move(Block::DIR Dir);
 	void fall(float dt);
 	void revertMove();
 	void setOldRotationStage();

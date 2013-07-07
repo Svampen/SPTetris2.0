@@ -8,6 +8,12 @@ using namespace sf;
 class Block : public Sprite
 {
 public:
+	enum DIR
+	{
+		LEFT = 0,
+		RIGHT = 1,
+		DOWN = 2
+	};
 
 	Block();
 	Block(float X, float Y, const std::string Texture);
@@ -16,6 +22,7 @@ public:
 	
 	void setPos(float X, float Y);
 	void move(float X, float Y);
+	void move(DIR Dir);
 	void moveX(float X);
 	void moveY(float Y);
 	void draw();

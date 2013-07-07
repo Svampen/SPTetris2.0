@@ -129,7 +129,7 @@ void Game::handleinput()
 		// Move Piece to the left
 		if(mCurrentPiece != NULL)
 		{
-			mCurrentPiece->move(TetrisPiece::LEFT);
+			mCurrentPiece->move(Block::LEFT);
 			if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 				mCurrentPiece->revertMove();
 			if(!mMap->isValidMove(*mCurrentPiece))
@@ -140,7 +140,7 @@ void Game::handleinput()
 		// Move Piece to the right
 		if(mCurrentPiece != NULL)
 		{
-			mCurrentPiece->move(TetrisPiece::RIGHT);
+			mCurrentPiece->move(Block::RIGHT);
 			if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 				mCurrentPiece->revertMove();
 			if(!mMap->isValidMove(*mCurrentPiece))
@@ -167,7 +167,7 @@ void Game::update()
 			// Move piece one tile at a time until collision
 			while(mPieceBuilder->isValidMove(*mCurrentPiece))
 			{
-				mCurrentPiece->move(TetrisPiece::DOWN);
+				mCurrentPiece->move(Block::DOWN);
 			}
 			// use old pos
 			mCurrentPiece->revertMove();
@@ -191,7 +191,7 @@ void Game::update()
 			// move piece one tile at a time until last outside map then
 			while(mMap->isValidMove(*mCurrentPiece))
 			{
-				mCurrentPiece->move(TetrisPiece::DOWN);
+				mCurrentPiece->move(Block::DOWN);
 			}
 			// use old pos
 			mCurrentPiece->revertMove();
