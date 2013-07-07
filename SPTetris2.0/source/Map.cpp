@@ -170,3 +170,14 @@ Vector2f Map::getStartPos()
 {
 	return mStart;
 }
+
+void Map::dropBlocks(int startRow)
+{
+	for(int i=startRow; i>0; i--)
+	{
+		for(int j=mWidth-1; j>0; j--)
+		{
+			//mMap[i * mWidth + j]->block->
+		}
+	}
+}
