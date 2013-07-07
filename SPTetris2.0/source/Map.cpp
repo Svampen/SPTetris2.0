@@ -138,9 +138,18 @@ int* Map::checkCompleteRow(TetrisPiece &TPiece)
 	int *rows = new int[4];
 
 	rows[0] = rowComplete(row0);
-	rows[1] = rowComplete(row1);
-	rows[2] = rowComplete(row2);
-	rows[3] = rowComplete(row3);
+	if(row1 == row0)
+		rows[1] = -1;
+	else
+		rows[1] = rowComplete(row1);
+	if(row2 == row1 || row2 == row0)
+		rows[2] = -1;
+	else
+		rows[2] = rowComplete(row2);
+	if(row3 == row2 || row3 == row1 || row3 == row0)
+		rows[3] = -1;
+	else
+		rows[3] = rowComplete(row3);
 
 	return rows;
 }
@@ -178,7 +187,11 @@ void Map::moveBlocks(int startRow)
 		for(int j=mWidth-1; j>=0; j--)
 		{
 			if(mMap[i * mWidth + j]->block != NULL)
+			{
 				mMap[i * mWidth + j]->block->move(Block::DOWN);
+				mMap[(i + 1) * mWidth + j]->block = mMap[i * mWidth + j]->block;
+				mMap[i * mWidth + j]->block = NULL;
+			}
 		}
 	}
 }
