@@ -168,6 +168,9 @@ void Game::update()
 			// Use current piece as a starting point for check if any row has been
 			// completed
 			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
+			mRows->cleared = new bool[];
+			for(int i=0; i<4; i++)
+				mRows->cleared[i] = false;
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 
@@ -192,6 +195,9 @@ void Game::update()
 			// Use current piece as a starting point for check if any row has been
 			// completed
 			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
+			mRows->cleared = new bool[];
+			for(int i=0; i<4; i++)
+				mRows->cleared[i] = false;
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 			
@@ -312,6 +318,7 @@ void Game::dropping()
 		// Go back to playing the game
 		mGameState = Playing;
 		mRows->rows = NULL;
+		mRows->cleared = NULL;
 		mRows->deepest = -1;
 		mRows->nrOfRows = 0;
 	}
