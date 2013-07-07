@@ -130,10 +130,10 @@ int* Map::checkCompleteRow(TetrisPiece &TPiece)
 
 	Vector2f size = TPiece.getBlock0()->getSize();
 
-	int row0 = (int)((pos0.y / size.y) * mWidth + (pos0.x / size.x)) / mHeight;
-	int row1 = (int)((pos1.y / size.y) * mWidth + (pos1.x / size.x)) / mHeight;
-	int row2 = (int)((pos2.y / size.y) * mWidth + (pos2.x / size.x)) / mHeight;
-	int row3 = (int)((pos3.y / size.y) * mWidth + (pos3.x / size.x)) / mHeight;
+	int row0 = (int)(pos0.y / size.y);
+	int row1 = (int)(pos1.y / size.y);
+	int row2 = (int)(pos2.y / size.y);
+	int row3 = (int)(pos3.y / size.y);
 
 	int *rows = new int[4];
 
