@@ -12,7 +12,7 @@ Game::Game()
 	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(10, 25);
+	mMap = new Map(10, 15);
 
 	dt = 0.0f;
 	// 30 frames per second
@@ -342,10 +342,10 @@ void Game::dropping()
 					mRows->rows[prevEmptyRow]--;
 				}
 			}
+
 			if(moveRowNr != -1)
 			{
 				mMap->moveBlocks(moveRowNr);
-				mRows->deepest--;
 				mRows->nrOfRows--;
 				droppingClock.restart();
 			}
