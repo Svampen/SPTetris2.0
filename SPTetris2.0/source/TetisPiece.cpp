@@ -8,7 +8,6 @@
 
 TetrisPiece::TetrisPiece()
 {
-	mFallSpeed = mBlock0->getSize().y;
 }
 TetrisPiece::~TetrisPiece()
 {
