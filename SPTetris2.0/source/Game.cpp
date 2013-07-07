@@ -9,7 +9,7 @@
 Game::Game()
 {
 	mCurrentPiece = NULL;
-	mRows = NULL;
+	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();
 
 	mMap = new Map(10, 10);
@@ -67,9 +67,9 @@ void Game::loop(RenderWindow &window)
 			Block** blist;
 			for(int i=0; i<4; i++)
 			{
-				if(mRows[i] != -1)
+				if(mRows->rows[i] != -1)
 				{	
-					blist = mMap->clearRow(mRows[i]);
+					blist = mMap->clearRow(mRows->rows[i]);
 					//FIX ME: should be mMap->getWidth() instead of 10
 					mPieceBuilder->freeBlocks(blist, 10);
 					//TODO: Trigger particle system here
@@ -176,7 +176,7 @@ void Game::update()
 			mMap->drop(*mCurrentPiece);
 			// Use current piece as a starting point for check if any row has been
 			// completed
-			mRows = mMap->checkCompleteRow(*mCurrentPiece);
+			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 
@@ -200,18 +200,17 @@ void Game::update()
 			mMap->drop(*mCurrentPiece);
 			// Use current piece as a starting point for check if any row has been
 			// completed
-			mRows = mMap->checkCompleteRow(*mCurrentPiece);
+			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
 			
 		}
 
 		// Check if any row is complete
-		if(mRows != NULL)
+		if(mRows->rows != NULL)
 		{
-			for(int i=0;i<4;i++)
-				if(mRows[i] != -1)
-					mGameState = Clearing;
+			checkRows();
+			
 		}
 	}
 }
@@ -228,4 +227,21 @@ void Game::draw(RenderWindow &window)
 	mPieceBuilder->draw(&window);
 	//b->draw(&window);
 	//window.draw(*b);
+}
+
+void Game::checkRows()
+{
+	mRows->nrOfRows = 0;
+	mRows->deepest = -1;
+	for(int i=0;i<4;i++)
+	{
+		if(mRows->rows[i] != -1)
+		{
+			if(mRows->rows[i] > mRows->deepest)
+				mRows->deepest = mRows->rows[i];
+			mRows->nrOfRows++;
+		}
+	}
+	if(mRows->nrOfRows > 0)
+		mGameState = Clearing;
 }

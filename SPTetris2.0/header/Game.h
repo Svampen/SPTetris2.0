@@ -20,6 +20,7 @@ private:
 	void handleinput();
 	void update();
 	void draw(RenderWindow &window);
+	void checkRows();
 
 
 	TetrisPiece *mCurrentPiece;
@@ -41,7 +42,13 @@ private:
 	PieceBuilder::Piece mPiece;
 	GameState mGameState;
 	Vector2f mStart;
-	int *mRows;
+	struct Rows
+	{
+		int *rows;
+		int nrOfRows;
+		int deepest;
+	};
+	Rows *mRows;
 };
 
 #endif
