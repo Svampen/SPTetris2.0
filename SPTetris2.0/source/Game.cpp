@@ -242,8 +242,7 @@ void Game::clearing()
 		if(mRows->rows[i] != -1)
 		{	
 			blist = mMap->clearRow(mRows->rows[i]);
-			//FIX ME: should be mMap->getWidth() instead of 10
-			mPieceBuilder->freeBlocks(blist, 10);
+			mPieceBuilder->freeBlocks(blist, mMap->getWidth());
 			//TODO: Trigger particle system here
 		}
 	}
