@@ -211,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\source\ParticleSystem.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\source\PieceBuilder.cpp"
 				>
 			</File>
@@ -270,6 +274,10 @@
 			</File>
 			<File
 				RelativePath=".\header\OPiece.h"
+				>
+			</File>
+			<File
+				RelativePath=".\header\ParticleSystem.h"
 				>
 			</File>
 			<File
