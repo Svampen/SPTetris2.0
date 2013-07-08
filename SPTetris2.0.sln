@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPTetris2.0", "SPTetris2.0\SPTetris2.0.vcproj", "{B2C1B766-0587-4A50-9CBB-D6100D300B10}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPTetris2.0", "SPTetris2.0\SPTetris2.0.vcxproj", "{B2C1B766-0587-4A50-9CBB-D6100D300B10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
