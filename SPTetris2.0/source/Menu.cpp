@@ -24,6 +24,11 @@ Menu::~Menu()
 
 }
 
+void Menu::handleInput(Event e)
+{
+	mDesktop.HandleEvent(e);
+}
+
 void Menu::update(float dt)
 {
 	mDesktop.Update(dt);

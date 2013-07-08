@@ -13,6 +13,7 @@ public:
 	Menu();
 	~Menu();
 
+	void handleInput(Event e);
 	void update(float dt);
 	void draw(RenderWindow &window);
 
