@@ -18,18 +18,20 @@ Game::Game()
 	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
+	mMenu = new Menu();
+	mGameState = Meny;
 }
 
 Game::~Game()
 {
-
+	delete mMenu;
 }
 
 void Game::loop(RenderWindow &window)
 {
 	//temp stuff start
 	mStart = mMap->getStartPos();
-	mGameState = Playing;
+	//mGameState = Playing;
 	//temp stuff end
 	while (window.isOpen())
     {
@@ -39,6 +41,14 @@ void Game::loop(RenderWindow &window)
 
 		while (window.pollEvent(mEvent))
 		{
+			switch(mGameState)
+			{
+			case Meny:
+				window.resetGLStates();
+				mMenu->handleInput(mEvent);
+				break;
+			}
+
 			switch(mEvent.type)
 			{
 			case Event::Closed:
@@ -82,9 +92,20 @@ void Game::loop(RenderWindow &window)
 		case Dropping:
 			dropping();
 			break;
+		case Meny:
+			mMenu->update(dt);
+			break;
 		}
 
-		draw(window);
+		switch(mGameState)
+		{
+		case Meny:
+			mMenu->draw(window);
+			break;
+		default:
+			draw(window);
+			break;
+		}
 		window.display();
 	}
 }

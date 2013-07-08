@@ -6,6 +6,7 @@
 #include "IPiece.h"
 #include "PieceBuilder.h"
 #include "Map.h"
+#include "Menu.h"
 
 class Game
 {
@@ -28,6 +29,7 @@ private:
 	TetrisPiece *mCurrentPiece;
 	PieceBuilder *mPieceBuilder;
 	Map *mMap;
+	Menu *mMenu;
 	
 	enum GameState
 	{
