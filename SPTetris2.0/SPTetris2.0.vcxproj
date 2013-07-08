@@ -63,7 +63,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;sfgui-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\SDK\SFGUI-0.1.0_VC11\lib;C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -87,7 +87,7 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;sfgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\SDK\SFGUI-0.1.0_VC11\lib;C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\lib;$InputDir/header/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -108,6 +108,7 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     <ClCompile Include="source\LPiece.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Map.cpp" />
+    <ClCompile Include="source\Menu.cpp" />
     <ClCompile Include="source\OPiece.cpp" />
     <ClCompile Include="source\ParticleSystem.cpp" />
     <ClCompile Include="source\PieceBuilder.cpp" />
@@ -124,6 +125,7 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="header\List.h" />
     <ClInclude Include="header\LPiece.h" />
     <ClInclude Include="header\Map.h" />
+    <ClInclude Include="header\Menu.h" />
     <ClInclude Include="header\Node.h" />
     <ClInclude Include="header\OPiece.h" />
     <ClInclude Include="header\ParticleSystem.h" />
