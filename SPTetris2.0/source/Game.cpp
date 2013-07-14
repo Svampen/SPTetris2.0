@@ -125,7 +125,11 @@ void Game::handleinput(RenderWindow &window)
 					mCurrentPiece->revertMove();
 					mCurrentPiece->setOldRotationStage();
 				}
-				//TODO: check against map boundaries
+				if(!mMap->isValidMove(*mCurrentPiece))
+				{
+					mCurrentPiece->revertMove();
+					mCurrentPiece->setOldRotationStage();
+				}
 			}
 		}
 		else if(mEvent.key.code == Keyboard::Num1 && pressed)
