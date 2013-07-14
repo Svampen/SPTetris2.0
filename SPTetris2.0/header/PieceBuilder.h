@@ -44,8 +44,7 @@ public:
 	bool isValidMove(TetrisPiece &TPiece);
 	void freeBlocks(Block **blist, int length);
 	void freeBlock(Block *block);
-	void onLostDevice();
-	void onResetDevice();
+	void reset();
 
 private:
 	Block& takeFreeBlock();

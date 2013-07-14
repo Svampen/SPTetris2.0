@@ -177,20 +177,12 @@ void PieceBuilder::freeBlock(Block *block)
 	}
 }
 
-void PieceBuilder::onLostDevice()
+void PieceBuilder::reset()
 {
 	for(int i=0; i<mBlockPool->getSize(); i++)
 	{
 		BlockPool *bp = mBlockPool->getAt(i);
-		bp->mBlock->onLostDevice();
-	}
-}
-
-void PieceBuilder::onResetDevice()
-{
-	for(int i=0; i<mBlockPool->getSize(); i++)
-	{
-		BlockPool *bp = mBlockPool->getAt(i);
-		bp->mBlock->onResetDevice();
+		bp->free = true;
+		bp->usedbypiece = false;
 	}
 }
