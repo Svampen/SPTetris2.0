@@ -48,7 +48,7 @@ Menu::~Menu()
 
 void Menu::OnNewGameClick()
 {
-	mGameState = Playing;
+	mGameState = New;
 	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
 	mDesktop.SetProperty("Button#continue", "Color", sf::Color(255, 255, 255));
 }

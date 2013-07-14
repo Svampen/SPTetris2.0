@@ -79,6 +79,7 @@ void Game::loop(RenderWindow &window)
 		case New:
 			// Reset everything
 			reset();
+			mGameState = Playing;
 			draw(window);
 			break;
 		case Quit:
@@ -393,7 +394,10 @@ void Game::dropping()
 void Game::reset()
 {
 	if(mCurrentPiece != NULL)
+	{
 		mPieceBuilder->delPiece(mCurrentPiece);
+		mCurrentPiece = NULL;
+	}
 	mMap->clearMap();
 	mPieceBuilder->reset();
 }
