@@ -18,28 +18,18 @@ public:
 
 private:
 
-	void handleinput(bool pressed);
+	void handleinput(RenderWindow &window);
 	void update();
 	void draw(RenderWindow &window);
 	void checkRows();
 	void clearing();
 	void dropping();
 
-
 	TetrisPiece *mCurrentPiece;
 	PieceBuilder *mPieceBuilder;
 	Map *mMap;
 	Menu *mMenu;
 	
-	enum GameState
-	{
-		Paused     = 0,
-		Playing    = 1,
-		Clearing   = 2,
-		Dropping   = 3,
-		Meny       = 4
-	};
-
 	float mSpeed;
 
 	sf::Clock mClock;

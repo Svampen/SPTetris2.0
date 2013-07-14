@@ -38,6 +38,7 @@ Menu::Menu(int Width, int Height)
 	mDesktop.SetProperty("Button#continue", "FontSize", 20);
 	mDesktop.SetProperty("Button#new", "FontSize", 20);
 	mDesktop.SetProperty("Button#quit", "FontSize", 20);
+	mGameState = Meny;
 }
 
 Menu::~Menu()
@@ -47,22 +48,36 @@ Menu::~Menu()
 
 void Menu::OnNewGameClick()
 {
-	cout << "test\n";
+	mGameState = New;
 }
 
 void Menu::OnContinueClick()
 {
-
+	mGameState = Playing;
 }
 
 void Menu::OnQuitClick()
 {
-
+	mGameState = Quit;
 }
 
-void Menu::handleInput(Event e)
+GameState Menu::handleInput(Event e, RenderWindow &window)
 {
-	mDesktop.HandleEvent(e);
+
+	while (window.pollEvent(e))
+	{
+		mDesktop.HandleEvent(e);
+		switch(e.type)
+		{
+		case Event::Closed:
+			// Delete all resources
+			window.close();
+			break;
+		default:
+			break;
+		}
+	}
+	return mGameState;
 }
 
 void Menu::update(float dt)
@@ -72,5 +87,6 @@ void Menu::update(float dt)
 
 void Menu::draw(RenderWindow &window)
 {
+	window.resetGLStates();
 	mSfgui.Display(window);
 }

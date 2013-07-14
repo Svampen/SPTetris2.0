@@ -3,6 +3,7 @@
 
 #include <SFGUI/SFGUI.hpp>
 #include <SFML/Graphics.hpp>
+#include "Tetris.h"
 #include <iostream>
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
 	void OnContinueClick();
 	void OnQuitClick();
 
-	void handleInput(Event e);
+	GameState handleInput(Event e, RenderWindow &window);
 	void update(float dt);
 	void draw(RenderWindow &window);
 
@@ -32,5 +33,6 @@ private:
 	sfg::Window::Ptr mWindow;
 	sfg::Box::Ptr mBox;
 	sfg::Desktop mDesktop;
+	GameState mGameState;
 };
 #endif

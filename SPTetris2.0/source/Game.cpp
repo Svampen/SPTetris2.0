@@ -38,167 +38,167 @@ void Game::loop(RenderWindow &window)
 		// Calculate delta time
 		dt = mClock.restart().asSeconds();
 		dt = min(dt, maxFps);
-
-		while (window.pollEvent(mEvent))
-		{
-			switch(mGameState)
-			{
-			case Meny:
-				window.resetGLStates();
-				mMenu->handleInput(mEvent);
-				break;
-			}
-
-			switch(mEvent.type)
-			{
-			case Event::Closed:
-				// Delete all resources
-				window.close();
-				break;
-
-			case Event::KeyPressed:
-				switch(mGameState)
-				{
-				case Playing:
-					handleinput(true);
-					break;
-				case Clearing:
-					break;
-				}
-				break;
-			case Event::KeyReleased:
-				switch(mGameState)
-				{
-				case Playing:
-					handleinput(false);
-					break;
-				case Clearing:
-					break;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-
 		switch(mGameState)
 		{
-		case Playing:
-			update();
-			break;
-		case Clearing:
-			clearing();
-			break;
-		case Dropping:
-			dropping();
-			break;
 		case Meny:
+			// handle input
+			mGameState = mMenu->handleInput(mEvent, window);
+			// update
 			mMenu->update(dt);
-			break;
-		}
-
-		switch(mGameState)
-		{
-		case Meny:
+			// draw
 			mMenu->draw(window);
 			break;
-		default:
+		case Playing:
+			// handle input
+			handleinput(window);
+			// update
+			update();
+			// draw
 			draw(window);
+			break;
+		case Clearing:
+			// handle input
+			// update
+			clearing();
+			// draw
+			draw(window);
+			break;
+		case Dropping:
+			// handle input
+			// update
+			dropping();
+			// draw
+			draw(window);
+			break;
+		case Paused:
+			// handle input
+			// update
+			// draw
+			draw(window);
+			break;
+		case New:
+			// Reset everything
+			draw(window);
+			break;
+		case Quit:
+			// Delete all resources
+			window.close();
 			break;
 		}
 		window.display();
 	}
 }
 
-void Game::handleinput(bool pressed)
+void Game::handleinput(RenderWindow &window)
 {
+	bool pressed = false;
 	bool released = false;
-	if(!pressed)
-		released = true;
 
-	if(mEvent.key.code == Keyboard::Space && pressed)
+	while (window.pollEvent(mEvent))
 	{
-		if(mCurrentPiece != NULL)
+		pressed = false;
+		released = false;
+
+		switch(mEvent.type)
 		{
-			mCurrentPiece->rotate();
-			if(!mPieceBuilder->isValidMove(*mCurrentPiece))
+		case Event::Closed:
+			// Delete all resources
+			window.close();
+			break;
+		case Event::KeyPressed:
+			pressed = true;
+			break;
+		case Event::KeyReleased:
+			released = true;
+			break;
+		default:
+			break;
+		}
+
+		if(mEvent.key.code == Keyboard::Space && pressed)
+		{
+			if(mCurrentPiece != NULL)
 			{
-				mCurrentPiece->revertMove();
-				mCurrentPiece->setOldRotationStage();
+				mCurrentPiece->rotate();
+				if(!mPieceBuilder->isValidMove(*mCurrentPiece))
+				{
+					mCurrentPiece->revertMove();
+					mCurrentPiece->setOldRotationStage();
+				}
+				//TODO: check against map boundaries
 			}
-			//TODO: check against map boundaries
 		}
-	}
-	else if(mEvent.key.code == Keyboard::Num1 && pressed)
-	{
-		// Release the piece into invdiual blocks before creating a new one
-		// and drop it on to the map
-		if(mCurrentPiece != NULL)
+		else if(mEvent.key.code == Keyboard::Num1 && pressed)
 		{
-			mMap->drop(*mCurrentPiece);
-			mPieceBuilder->delPiece(mCurrentPiece);
-			mCurrentPiece = NULL;
-		}
-		mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
-		mCurrentPiece->setSpeed(mSpeed);
-	}
-	else if(mEvent.key.code == Keyboard::C && pressed)
-	{
-		// Release the piece into invdiual blocks before creating a new one
-		// and drop it on to the map
-		if(mCurrentPiece != NULL)
-		{
-			mMap->drop(*mCurrentPiece);
-			mPieceBuilder->delPiece(mCurrentPiece);
-			mCurrentPiece = NULL;
-		}
-		// Create a new piece
-		mPiece = (PieceBuilder::Piece)(rand() % 7);
-		mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-		mCurrentPiece->setSpeed(mSpeed);
-	}
-	else if(mEvent.key.code == Keyboard::A && pressed)
-	{
-		// Move Piece to the left
-		if(mCurrentPiece != NULL)
-		{
-			mCurrentPiece->move(Block::LEFT);
-			if(!mPieceBuilder->isValidMove(*mCurrentPiece))
-				mCurrentPiece->revertMove();
-			if(!mMap->isValidMove(*mCurrentPiece))
-				mCurrentPiece->revertMove();
-		}
-	}
-	else if(mEvent.key.code == Keyboard::D && pressed)
-	{
-		// Move Piece to the right
-		if(mCurrentPiece != NULL)
-		{
-			mCurrentPiece->move(Block::RIGHT);
-			if(!mPieceBuilder->isValidMove(*mCurrentPiece))
-				mCurrentPiece->revertMove();
-			if(!mMap->isValidMove(*mCurrentPiece))
-				mCurrentPiece->revertMove();
-		}
-	}
-	else if(mEvent.key.code == Keyboard::S && pressed)
-	{
-		// Move Piece faster downward
-		if(mCurrentPiece != NULL && mSpeed != 10.0f)
-		{
-			mSpeed = 10.0f;
+			// Release the piece into invdiual blocks before creating a new one
+			// and drop it on to the map
+			if(mCurrentPiece != NULL)
+			{
+				mMap->drop(*mCurrentPiece);
+				mPieceBuilder->delPiece(mCurrentPiece);
+				mCurrentPiece = NULL;
+			}
+			mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
 			mCurrentPiece->setSpeed(mSpeed);
 		}
-	}
-	else if(mEvent.key.code == Keyboard::S && released)
-	{
-		if(mCurrentPiece != NULL && mSpeed == 10.0f)
+		else if(mEvent.key.code == Keyboard::C && pressed)
 		{
-			mSpeed = 1.0f;
+			// Release the piece into invdiual blocks before creating a new one
+			// and drop it on to the map
+			if(mCurrentPiece != NULL)
+			{
+				mMap->drop(*mCurrentPiece);
+				mPieceBuilder->delPiece(mCurrentPiece);
+				mCurrentPiece = NULL;
+			}
+			// Create a new piece
+			mPiece = (PieceBuilder::Piece)(rand() % 7);
+			mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
 			mCurrentPiece->setSpeed(mSpeed);
 		}
-		else if (mCurrentPiece == NULL)
-			mSpeed = 1.0f;
+		else if(mEvent.key.code == Keyboard::A && pressed)
+		{
+			// Move Piece to the left
+			if(mCurrentPiece != NULL)
+			{
+				mCurrentPiece->move(Block::LEFT);
+				if(!mPieceBuilder->isValidMove(*mCurrentPiece))
+					mCurrentPiece->revertMove();
+				if(!mMap->isValidMove(*mCurrentPiece))
+					mCurrentPiece->revertMove();
+			}
+		}
+		else if(mEvent.key.code == Keyboard::D && pressed)
+		{
+			// Move Piece to the right
+			if(mCurrentPiece != NULL)
+			{
+				mCurrentPiece->move(Block::RIGHT);
+				if(!mPieceBuilder->isValidMove(*mCurrentPiece))
+					mCurrentPiece->revertMove();
+				if(!mMap->isValidMove(*mCurrentPiece))
+					mCurrentPiece->revertMove();
+			}
+		}
+		else if(mEvent.key.code == Keyboard::S && pressed)
+		{
+			// Move Piece faster downward
+			if(mCurrentPiece != NULL && mSpeed != 10.0f)
+			{
+				mSpeed = 10.0f;
+				mCurrentPiece->setSpeed(mSpeed);
+			}
+		}
+		else if(mEvent.key.code == Keyboard::S && released)
+		{
+			if(mCurrentPiece != NULL && mSpeed == 10.0f)
+			{
+				mSpeed = 1.0f;
+				mCurrentPiece->setSpeed(mSpeed);
+			}
+			else if (mCurrentPiece == NULL)
+				mSpeed = 1.0f;
+		}
 	}
 }
 
