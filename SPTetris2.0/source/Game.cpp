@@ -199,6 +199,8 @@ void Game::handleinput(RenderWindow &window)
 			else if (mCurrentPiece == NULL)
 				mSpeed = 1.0f;
 		}
+		else if(mEvent.key.code == Keyboard::Escape && pressed)
+			mGameState = Meny;
 	}
 }
 
