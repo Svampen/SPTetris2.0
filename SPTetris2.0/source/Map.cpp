@@ -175,6 +175,14 @@ Block** Map::clearRow(int row)
 	return blist;
 }
 
+void Map::clearMap()
+{
+	for(int i=0;i<(mWidth * mHeight);i++)
+	{
+		mMap[i]->block = NULL;
+	}
+}
+
 Vector2f Map::getStartPos()
 {
 	return mStart;
