@@ -131,6 +131,7 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     <ClInclude Include="header\ParticleSystem.h" />
     <ClInclude Include="header\PieceBuilder.h" />
     <ClInclude Include="header\SPiece.h" />
+    <ClInclude Include="header\Tetris.h" />
     <ClInclude Include="header\TetrisPiece.h" />
     <ClInclude Include="header\TPiece.h" />
     <ClInclude Include="header\ZPiece.h" />

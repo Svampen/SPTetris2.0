@@ -110,6 +110,9 @@
     <ClInclude Include="header\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\Tetris.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="gfx\cyan.png">
