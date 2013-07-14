@@ -15,7 +15,7 @@ Menu::Menu(int Width, int Height)
 	mNewGameButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnNewGameClick, this);
 	mContinueButton = sfg::Button::Create("Continue");
 	mContinueButton->SetId("continue");
-	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
+	
 	mQuitGameButton = sfg::Button::Create("Quit");
 	mQuitGameButton->SetId("quit");
 	mQuitGameButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnQuitClick, this);
@@ -48,7 +48,9 @@ Menu::~Menu()
 
 void Menu::OnNewGameClick()
 {
-	mGameState = New;
+	mGameState = Playing;
+	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
+	mDesktop.SetProperty("Button#continue", "Color", sf::Color(255, 255, 255));
 }
 
 void Menu::OnContinueClick()
@@ -63,7 +65,7 @@ void Menu::OnQuitClick()
 
 GameState Menu::handleInput(Event e, RenderWindow &window)
 {
-
+	mGameState = Meny;
 	while (window.pollEvent(e))
 	{
 		mDesktop.HandleEvent(e);
