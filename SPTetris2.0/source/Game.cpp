@@ -19,6 +19,7 @@ Game::Game()
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
 	mMenu = new Menu(1280, 720);
+	mStart = mMap->getStartPos();
 	mGameState = Meny;
 }
 
@@ -29,10 +30,6 @@ Game::~Game()
 
 void Game::loop(RenderWindow &window)
 {
-	//temp stuff start
-	mStart = mMap->getStartPos();
-	//mGameState = Playing;
-	//temp stuff end
 	while (window.isOpen())
     {
 		// Calculate delta time
@@ -80,6 +77,7 @@ void Game::loop(RenderWindow &window)
 			// Reset everything
 			reset();
 			mGameState = Playing;
+			createPiece();
 			draw(window);
 			break;
 		case Quit:
@@ -304,7 +302,10 @@ void Game::checkRows()
 	if(mRows->nrOfRows > 0)
 		mGameState = Clearing;
 	else
+	{
 		mRows->rows = NULL;
+		createPiece();
+	}
 }
 
 void Game::clearing()
@@ -328,6 +329,7 @@ void Game::dropping()
 	if(mRows->rows == NULL)
 	{
 		mGameState = Playing;
+		createPiece();
 	}
 	else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
 	{
@@ -388,6 +390,7 @@ void Game::dropping()
 		mRows->cleared = NULL;
 		mRows->deepest = -1;
 		mRows->nrOfRows = 0;
+		createPiece();
 	}
 }
 
@@ -400,4 +403,12 @@ void Game::reset()
 	}
 	mMap->clearMap();
 	mPieceBuilder->reset();
+}
+
+void Game::createPiece()
+{
+	// Create a new piece
+	mPiece = (PieceBuilder::Piece)(rand() % 7);
+	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
+	mCurrentPiece->setSpeed(mSpeed);
 }

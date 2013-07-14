@@ -25,6 +25,7 @@ private:
 	void clearing();
 	void dropping();
 	void reset();
+	void createPiece();
 
 	TetrisPiece *mCurrentPiece;
 	PieceBuilder *mPieceBuilder;
