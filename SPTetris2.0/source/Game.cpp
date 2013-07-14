@@ -18,7 +18,7 @@ Game::Game()
 	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
-	mMenu = new Menu();
+	mMenu = new Menu(1280, 720);
 	mGameState = Meny;
 }
 
