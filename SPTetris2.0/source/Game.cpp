@@ -78,6 +78,7 @@ void Game::loop(RenderWindow &window)
 			break;
 		case New:
 			// Reset everything
+			reset();
 			draw(window);
 			break;
 		case Quit:
@@ -387,4 +388,12 @@ void Game::dropping()
 		mRows->deepest = -1;
 		mRows->nrOfRows = 0;
 	}
+}
+
+void Game::reset()
+{
+	if(mCurrentPiece != NULL)
+		mPieceBuilder->delPiece(mCurrentPiece);
+	mMap->clearMap();
+	mPieceBuilder->reset();
 }
