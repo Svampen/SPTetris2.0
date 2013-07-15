@@ -204,7 +204,10 @@ void Game::handleinput(RenderWindow &window)
 				mSpeed = 1.0f;
 		}
 		else if(mEvent.key.code == Keyboard::Escape && pressed)
+		{
 			mGameState = Meny;
+			mMenu->setLabel("Paused");
+		}
 	}
 }
 
