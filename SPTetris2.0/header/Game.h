@@ -33,6 +33,8 @@ private:
 	Menu *mMenu;
 	
 	float mSpeed;
+	int mLevel;
+	int mDrops;
 
 	sf::Clock mClock;
 	Event mEvent;
@@ -50,6 +52,7 @@ private:
 	};
 	Rows *mRows;
 	sf::Clock droppingClock;
+	int mScore;
 };
 
 #endif

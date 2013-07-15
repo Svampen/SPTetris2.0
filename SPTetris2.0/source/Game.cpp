@@ -18,9 +18,12 @@ Game::Game()
 	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
+	mLevel = 1;
 	mMenu = new Menu(1280, 720);
 	mStart = mMap->getStartPos();
 	mGameState = Meny;
+	mScore = 0;
+	mDrops = 0;
 }
 
 Game::~Game()
@@ -48,6 +51,9 @@ void Game::loop(RenderWindow &window)
 		case Playing:
 			// handle input
 			handleinput(window);
+			//s temp
+			cout << "Score:" << mScore << "\n";
+			//e temp
 			// update
 			update();
 			// draw
@@ -132,34 +138,34 @@ void Game::handleinput(RenderWindow &window)
 				}
 			}
 		}
-		else if(mEvent.key.code == Keyboard::Num1 && pressed)
-		{
-			// Release the piece into invdiual blocks before creating a new one
-			// and drop it on to the map
-			if(mCurrentPiece != NULL)
-			{
-				mMap->drop(*mCurrentPiece);
-				mPieceBuilder->delPiece(mCurrentPiece);
-				mCurrentPiece = NULL;
-			}
-			mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
-			mCurrentPiece->setSpeed(mSpeed);
-		}
-		else if(mEvent.key.code == Keyboard::C && pressed)
-		{
-			// Release the piece into invdiual blocks before creating a new one
-			// and drop it on to the map
-			if(mCurrentPiece != NULL)
-			{
-				mMap->drop(*mCurrentPiece);
-				mPieceBuilder->delPiece(mCurrentPiece);
-				mCurrentPiece = NULL;
-			}
-			// Create a new piece
-			mPiece = (PieceBuilder::Piece)(rand() % 7);
-			mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-			mCurrentPiece->setSpeed(mSpeed);
-		}
+		//else if(mEvent.key.code == Keyboard::Num1 && pressed)
+		//{
+		//	// Release the piece into invdiual blocks before creating a new one
+		//	// and drop it on to the map
+		//	if(mCurrentPiece != NULL)
+		//	{
+		//		mMap->drop(*mCurrentPiece);
+		//		mPieceBuilder->delPiece(mCurrentPiece);
+		//		mCurrentPiece = NULL;
+		//	}
+		//	mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
+		//	mCurrentPiece->setSpeed(speed * mLevel);
+		//}
+		//else if(mEvent.key.code == Keyboard::C && pressed)
+		//{
+		//	// Release the piece into invdiual blocks before creating a new one
+		//	// and drop it on to the map
+		//	if(mCurrentPiece != NULL)
+		//	{
+		//		mMap->drop(*mCurrentPiece);
+		//		mPieceBuilder->delPiece(mCurrentPiece);
+		//		mCurrentPiece = NULL;
+		//	}
+		//	// Create a new piece
+		//	mPiece = (PieceBuilder::Piece)(rand() % 7);
+		//	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
+		//	mCurrentPiece->setSpeed(speed * mLevel);
+		//}
 		else if(mEvent.key.code == Keyboard::A && pressed)
 		{
 			// Move Piece to the left
@@ -187,21 +193,18 @@ void Game::handleinput(RenderWindow &window)
 		else if(mEvent.key.code == Keyboard::S && pressed)
 		{
 			// Move Piece faster downward
-			if(mCurrentPiece != NULL && mSpeed != 10.0f)
+			if(mCurrentPiece != NULL && speed * mLevel != maxspeed)
 			{
-				mSpeed = 10.0f;
-				mCurrentPiece->setSpeed(mSpeed);
+				mCurrentPiece->setSpeed(maxspeed);
 			}
 		}
 		else if(mEvent.key.code == Keyboard::S && released)
 		{
-			if(mCurrentPiece != NULL && mSpeed == 10.0f)
+			if(mCurrentPiece != NULL)
 			{
-				mSpeed = 1.0f;
-				mCurrentPiece->setSpeed(mSpeed);
+				mCurrentPiece->setSpeed(speed * mLevel);
 			}
-			else if (mCurrentPiece == NULL)
-				mSpeed = 1.0f;
+				
 		}
 		else if(mEvent.key.code == Keyboard::Escape && pressed)
 		{
@@ -213,6 +216,14 @@ void Game::handleinput(RenderWindow &window)
 
 void Game::update()
 {
+	// Update level
+	if(mDrops >= dropped * mLevel && mLevel < maxlevel)
+	{
+		mDrops = 0;
+		mLevel += 1;
+		if(mCurrentPiece != NULL)
+			mCurrentPiece->setSpeed(speed * mLevel);
+	}
 	// Update Piece falling
 	if(mCurrentPiece != NULL)
 	{
@@ -241,8 +252,9 @@ void Game::update()
 				mRows->cleared[i] = false;
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
-
-			// Map should check if rows have be come complete
+			// Score
+			mScore += dropped * mLevel;
+			mDrops += 1;
 		}
 		// Is the piece below the map?
 		else if(!mMap->isValidMove(*mCurrentPiece))
@@ -268,6 +280,9 @@ void Game::update()
 				mRows->cleared[i] = false;
 			mPieceBuilder->delPiece(mCurrentPiece);
 			mCurrentPiece = NULL;
+			// Score
+			mScore += dropped * mLevel;
+			mDrops += 1;
 		}
 		// Check if any row is complete
 		if(mRows->rows != NULL)
@@ -320,6 +335,10 @@ void Game::clearing()
 		{	
 			blist = mMap->clearRow(mRows->rows[i]);
 			mPieceBuilder->freeBlocks(blist, mMap->getWidth());
+			// Increase score by cleared * level
+			mScore += cleared * mLevel;
+			// Remove one drops per cleared row
+			mDrops -= 1;
 			//TODO: Trigger particle system here
 		}
 	}
@@ -406,6 +425,8 @@ void Game::reset()
 	}
 	mMap->clearMap();
 	mPieceBuilder->reset();
+	mScore = 0;
+	mDrops = 0;
 }
 
 void Game::createPiece()
@@ -413,5 +434,5 @@ void Game::createPiece()
 	// Create a new piece
 	mPiece = (PieceBuilder::Piece)(rand() % 7);
 	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-	mCurrentPiece->setSpeed(mSpeed);
+	mCurrentPiece->setSpeed(speed * mLevel);
 }
