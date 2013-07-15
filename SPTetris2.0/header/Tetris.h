@@ -24,7 +24,7 @@ const float maxspeed = 10.0f;
 // Max level
 const int maxlevel = 10;
 // Dropps per level times level
-const int piecePerLevel = 10;
+const int dropsPerLevel = 2;
 
 
 #endif

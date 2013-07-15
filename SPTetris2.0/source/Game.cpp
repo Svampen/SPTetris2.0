@@ -53,6 +53,8 @@ void Game::loop(RenderWindow &window)
 			handleinput(window);
 			//s temp
 			cout << "Score:" << mScore << "\n";
+			cout << "Level:" << mLevel << "\n";
+			cout << "Drops:" << mDrops << "\n";
 			//e temp
 			// update
 			update();
@@ -216,8 +218,8 @@ void Game::handleinput(RenderWindow &window)
 
 void Game::update()
 {
-	// Update level
-	if(mDrops >= dropped * mLevel && mLevel < maxlevel)
+	// Update level and speed
+	if(mDrops >= dropsPerLevel * mLevel && mLevel < maxlevel)
 	{
 		mDrops = 0;
 		mLevel += 1;
@@ -427,6 +429,7 @@ void Game::reset()
 	mPieceBuilder->reset();
 	mScore = 0;
 	mDrops = 0;
+	mLevel = 0;
 }
 
 void Game::createPiece()
