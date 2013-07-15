@@ -23,10 +23,12 @@ public:
 	GameState handleInput(Event e, RenderWindow &window);
 	void update(float dt);
 	void draw(RenderWindow &window);
+	void setLabel(const sf::String label);
 
 private:
 	SFGUI mSfgui;
 
+	Label::Ptr mMenuHeadline;
 	Button::Ptr mNewGameButton;
 	Button::Ptr mContinueButton;
 	Button::Ptr mQuitGameButton;

@@ -10,6 +10,8 @@
 Menu::Menu(int Width, int Height)
 {
 	// Create the label.
+	mMenuHeadline = sfg::Label::Create("Menu");
+	mMenuHeadline->SetId("menu");
 	mNewGameButton = sfg::Button::Create("New Game");
 	mNewGameButton->SetId("new");
 	mNewGameButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnNewGameClick, this);
@@ -23,6 +25,7 @@ Menu::Menu(int Width, int Height)
 	mWindow = sfg::Window::Create(0);
 	mBox = sfg::Box::Create(sfg::Box::VERTICAL);
 	mBox->SetSpacing(1.0f);
+	mBox->Pack(mMenuHeadline);
 	mBox->Pack(mNewGameButton);
 	mBox->Pack(mContinueButton);
 	mBox->Pack(mQuitGameButton);
@@ -34,6 +37,8 @@ Menu::Menu(int Width, int Height)
 	mWindow->SetAllocation(FloatRect(Vector2f(posX, posY), size));
 	
 	mDesktop.Add(mWindow);
+	mDesktop.SetProperty("Label#menu", "FontSize", 20);
+	mDesktop.SetProperty("Label#menu", "Color", sf::Color(0, 255, 0));
 	mDesktop.SetProperty("Button#continue", "Color", sf::Color(0, 0, 0));
 	mDesktop.SetProperty("Button#continue", "FontSize", 20);
 	mDesktop.SetProperty("Button#new", "FontSize", 20);
@@ -91,4 +96,9 @@ void Menu::draw(RenderWindow &window)
 {
 	window.resetGLStates();
 	mSfgui.Display(window);
+}
+
+void Menu::setLabel(const sf::String label)
+{
+	mMenuHeadline->SetText(label);
 }
