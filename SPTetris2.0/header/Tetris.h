@@ -1,6 +1,11 @@
 #ifndef TETRIS_H
 #define TETRIS_H
 
+#include <iostream>
+using namespace std;
+using namespace sf;
+using namespace sfg;
+
 enum GameState
 {
 	Paused     = 0,
@@ -24,7 +29,7 @@ const float maxspeed = 10.0f;
 // Max level
 const int maxlevel = 10;
 // Dropps per level times level
-const int dropsPerLevel = 2;
+const int dropsPerLevel = 5;
 
 
 #endif

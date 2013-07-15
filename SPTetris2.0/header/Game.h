@@ -26,6 +26,7 @@ private:
 	void dropping();
 	void reset();
 	void createPiece();
+	void createInfoLabels();
 
 	TetrisPiece *mCurrentPiece;
 	PieceBuilder *mPieceBuilder;
@@ -53,6 +54,16 @@ private:
 	Rows *mRows;
 	sf::Clock droppingClock;
 	int mScore;
+
+	// Level/Score board
+	SFGUI mSfgui;
+
+	Label::Ptr mInfoHeadline;
+	Label::Ptr mScoreLabel;
+	Label::Ptr mLevelLabel;
+	sfg::Window::Ptr mWindow;
+	sfg::Box::Ptr mBox;
+	sfg::Desktop mDesktop;
 };
 
 #endif

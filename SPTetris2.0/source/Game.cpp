@@ -24,6 +24,7 @@ Game::Game()
 	mGameState = Meny;
 	mScore = 0;
 	mDrops = 0;
+	createInfoLabels();
 }
 
 Game::~Game()
@@ -33,8 +34,10 @@ Game::~Game()
 
 void Game::loop(RenderWindow &window)
 {
+	window.resetGLStates();
 	while (window.isOpen())
     {
+		window.clear(Color::Black);
 		// Calculate delta time
 		dt = mClock.restart().asSeconds();
 		dt = min(dt, maxFps);
@@ -212,6 +215,7 @@ void Game::handleinput(RenderWindow &window)
 		{
 			mGameState = Meny;
 			mMenu->setLabel("Paused");
+			mMenu->showWindow();
 		}
 	}
 }
@@ -226,6 +230,9 @@ void Game::update()
 		if(mCurrentPiece != NULL)
 			mCurrentPiece->setSpeed(speed * mLevel);
 	}
+	// Update info labels
+	mLevelLabel->SetText("Level:" + to_string(mLevel));
+	mScoreLabel->SetText("Score:" + to_string(mScore));
 	// Update Piece falling
 	if(mCurrentPiece != NULL)
 	{
@@ -290,11 +297,18 @@ void Game::update()
 		if(mRows->rows != NULL)
 			checkRows();
 	}
+
+	// Update info labels
+	mDesktop.Update(dt);
 }
 
 void Game::draw(RenderWindow &window)
 {
-	window.clear(Color::Black);
+	
+	
+	// Draw info labels
+	mSfgui.Display(window);
+
 	//Draw map first
 	mMap->draw(&window);
 	if(mCurrentPiece)
@@ -302,8 +316,6 @@ void Game::draw(RenderWindow &window)
 		mCurrentPiece->draw(&window);
 	}
 	mPieceBuilder->draw(&window);
-	//b->draw(&window);
-	//window.draw(*b);
 }
 
 void Game::checkRows()
@@ -438,4 +450,36 @@ void Game::createPiece()
 	mPiece = (PieceBuilder::Piece)(rand() % 7);
 	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
 	mCurrentPiece->setSpeed(speed * mLevel);
+}
+
+void Game::createInfoLabels()
+{
+	// Create the labels
+	mInfoHeadline = sfg::Label::Create("Score and Level");
+	mInfoHeadline->SetId("info");
+	mLevelLabel = sfg::Label::Create("Level:");
+	mLevelLabel->SetId("level");
+	mScoreLabel = sfg::Label::Create("Score:");
+	mScoreLabel->SetId("score");
+
+	// Create a window and add the label to it. Also set the window's title.
+	mWindow = sfg::Window::Create(0);
+	mBox = sfg::Box::Create(sfg::Box::VERTICAL);
+	mBox->SetSpacing(1.0f);
+	mBox->Pack(mInfoHeadline);
+	mBox->Pack(mLevelLabel);
+	mBox->Pack(mScoreLabel);
+
+	mWindow->Add(mBox);
+	Vector2f size = Vector2f(100.0f, 100.0f);
+	float posX = 400.0f;
+	float posY = 20.0f;
+	mWindow->SetAllocation(FloatRect(Vector2f(posX, posY), size));
+
+	mDesktop.Add(mWindow);
+	mDesktop.SetProperty("Label#info", "FontSize", 20);
+	//mDesktop.SetProperty("Label#menu", "Color", sf::Color(0, 255, 0));
+	//mDesktop.SetProperty("Button#continue", "Color", sf::Color(0, 0, 0));
+	mDesktop.SetProperty("Label#level", "FontSize", 20);
+	mDesktop.SetProperty("Label#score", "FontSize", 20);
 }

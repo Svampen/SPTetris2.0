@@ -29,7 +29,7 @@ Menu::Menu(int Width, int Height)
 	mBox->Pack(mNewGameButton);
 	mBox->Pack(mContinueButton);
 	mBox->Pack(mQuitGameButton);
-
+	
 	mWindow->Add(mBox);
 	Vector2f size = Vector2f(300.0f, 300.0f);
 	float posX = Width / 2 - size.x / 2;
@@ -56,11 +56,15 @@ void Menu::OnNewGameClick()
 	mGameState = New;
 	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
 	mDesktop.SetProperty("Button#continue", "Color", sf::Color(255, 255, 255));
+	mWindow->Show(false);
+	//mDesktop.Remove(mWindow);
 }
 
 void Menu::OnContinueClick()
 {
 	mGameState = Playing;
+	mWindow->Show(false);
+	//mDesktop.Remove(mWindow);
 }
 
 void Menu::OnQuitClick()
@@ -94,11 +98,16 @@ void Menu::update(float dt)
 
 void Menu::draw(RenderWindow &window)
 {
-	window.resetGLStates();
+	//window.resetGLStates();
 	mSfgui.Display(window);
 }
 
 void Menu::setLabel(const sf::String label)
 {
 	mMenuHeadline->SetText(label);
+}
+
+void Menu::showWindow()
+{
+	mWindow->Show(true);
 }

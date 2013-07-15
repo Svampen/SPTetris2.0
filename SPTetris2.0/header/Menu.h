@@ -4,11 +4,7 @@
 #include <SFGUI/SFGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "Tetris.h"
-#include <iostream>
-using namespace std;
 
-using namespace sf;
-using namespace sfg;
 
 class Menu
 {
@@ -24,6 +20,7 @@ public:
 	void update(float dt);
 	void draw(RenderWindow &window);
 	void setLabel(const sf::String label);
+	void showWindow();
 
 private:
 	SFGUI mSfgui;
