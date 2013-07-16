@@ -179,8 +179,12 @@ void Game::handleinput(RenderWindow &window)
 				mCurrentPiece->move(Block::LEFT);
 				if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 					mCurrentPiece->revertMove();
+				else
+					mSlidingTime.restart();
 				if(!mMap->isValidMove(*mCurrentPiece))
 					mCurrentPiece->revertMove();
+				else
+					mSlidingTime.restart();
 			}
 		}
 		else if(mEvent.key.code == Keyboard::D && pressed)
@@ -191,8 +195,12 @@ void Game::handleinput(RenderWindow &window)
 				mCurrentPiece->move(Block::RIGHT);
 				if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 					mCurrentPiece->revertMove();
+				else
+					mSlidingTime.restart();
 				if(!mMap->isValidMove(*mCurrentPiece))
 					mCurrentPiece->revertMove();
+				else
+					mSlidingTime.restart();
 			}
 		}
 		else if(mEvent.key.code == Keyboard::S && pressed)
@@ -250,20 +258,24 @@ void Game::update()
 			}
 			// use old pos
 			mCurrentPiece->revertMove();
-			// Release the piece into invdiual blocks before creating a new one
-			// and drop it on to the map
-			mMap->drop(*mCurrentPiece);
-			// Use current piece as a starting point for check if any row has been
-			// completed
-			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
-			mRows->cleared = new bool[];
-			for(int i=0; i<4; i++)
-				mRows->cleared[i] = false;
-			mPieceBuilder->delPiece(mCurrentPiece);
-			mCurrentPiece = NULL;
-			// Score
-			mScore += dropped * mLevel;
-			mDrops += 1;
+			// Should the piece be released or is sliding still allowed?
+			if(mSlidingTime.getElapsedTime().asMilliseconds() > 500)
+			{
+				// Release the piece into invdiual blocks before creating a new one
+				// and drop it on to the map
+				mMap->drop(*mCurrentPiece);
+				// Use current piece as a starting point for check if any row has been
+				// completed
+				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
+				mRows->cleared = new bool[];
+				for(int i=0; i<4; i++)
+					mRows->cleared[i] = false;
+				mPieceBuilder->delPiece(mCurrentPiece);
+				mCurrentPiece = NULL;
+				// Score
+				mScore += dropped * mLevel;
+				mDrops += 1;
+			}
 		}
 		// Is the piece below the map?
 		else if(!mMap->isValidMove(*mCurrentPiece))
@@ -278,20 +290,24 @@ void Game::update()
 			}
 			// use old pos
 			mCurrentPiece->revertMove();
-			// Release the piece into invdiual blocks before creating a new one
-			// and drop it on to the map
-			mMap->drop(*mCurrentPiece);
-			// Use current piece as a starting point for check if any row has been
-			// completed
-			mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
-			mRows->cleared = new bool[];
-			for(int i=0; i<4; i++)
-				mRows->cleared[i] = false;
-			mPieceBuilder->delPiece(mCurrentPiece);
-			mCurrentPiece = NULL;
-			// Score
-			mScore += dropped * mLevel;
-			mDrops += 1;
+			// Should the piece be released or is sliding still allowed?
+			if(mSlidingTime.getElapsedTime().asMilliseconds() > 500)
+			{
+				// Release the piece into invdiual blocks before creating a new one
+				// and drop it on to the map
+				mMap->drop(*mCurrentPiece);
+				// Use current piece as a starting point for check if any row has been
+				// completed
+				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
+				mRows->cleared = new bool[];
+				for(int i=0; i<4; i++)
+					mRows->cleared[i] = false;
+				mPieceBuilder->delPiece(mCurrentPiece);
+				mCurrentPiece = NULL;
+				// Score
+				mScore += dropped * mLevel;
+				mDrops += 1;
+			}
 		}
 		// Check if any row is complete
 		if(mRows->rows != NULL)

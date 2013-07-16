@@ -37,6 +37,8 @@ private:
 	int mLevel;
 	int mDrops;
 
+	sf::Clock mSlidingTime;
+
 	sf::Clock mClock;
 	Event mEvent;
 	float dt;
