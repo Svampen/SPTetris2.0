@@ -25,6 +25,7 @@ Game::Game()
 	mScore = 0;
 	mDrops = 0;
 	createInfoLabels();
+	mSlidingTime.restart();
 }
 
 Game::~Game()
