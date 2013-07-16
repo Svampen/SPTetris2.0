@@ -96,6 +96,14 @@ void Game::loop(RenderWindow &window)
 			// Delete all resources
 			window.close();
 			break;
+		case GameOver:
+			// handle input
+			mGameState = mMenu->handleInput(mEvent, window);
+			// update
+			mMenu->update(dt);
+			// draw
+			mMenu->draw(window);
+			break;
 		}
 		window.display();
 	}
@@ -467,6 +475,16 @@ void Game::createPiece()
 	mPiece = (PieceBuilder::Piece)(rand() % 7);
 	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
 	mCurrentPiece->setSpeed(speed * mLevel);
+	
+	// Check if new piece is colliding with another piece, 
+	// if so set mGameState to GameOver
+	if(!mPieceBuilder->isValidMove(*mCurrentPiece))
+	{
+		mGameState = GameOver;
+		mMenu->setLabel("Game Over");
+		mMenu->showWindow();
+		mMenu->disableContinueButton();
+	}
 }
 
 void Game::createInfoLabels()

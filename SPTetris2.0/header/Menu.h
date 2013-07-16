@@ -21,6 +21,7 @@ public:
 	void draw(RenderWindow &window);
 	void setLabel(const sf::String label);
 	void showWindow();
+	void disableContinueButton();
 
 private:
 	SFGUI mSfgui;
@@ -33,5 +34,7 @@ private:
 	sfg::Box::Ptr mBox;
 	sfg::Desktop mDesktop;
 	GameState mGameState;
+
+	unsigned int mContButtonId;
 };
 #endif

@@ -44,6 +44,7 @@ Menu::Menu(int Width, int Height)
 	mDesktop.SetProperty("Button#new", "FontSize", 20);
 	mDesktop.SetProperty("Button#quit", "FontSize", 20);
 	mGameState = Meny;
+	mContButtonId = 0;
 }
 
 Menu::~Menu()
@@ -54,17 +55,16 @@ Menu::~Menu()
 void Menu::OnNewGameClick()
 {
 	mGameState = New;
-	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
+	if(mContButtonId == 0)
+		mContButtonId = mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnContinueClick, this);
 	mDesktop.SetProperty("Button#continue", "Color", sf::Color(255, 255, 255));
 	mWindow->Show(false);
-	//mDesktop.Remove(mWindow);
 }
 
 void Menu::OnContinueClick()
 {
 	mGameState = Playing;
 	mWindow->Show(false);
-	//mDesktop.Remove(mWindow);
 }
 
 void Menu::OnQuitClick()
@@ -98,7 +98,6 @@ void Menu::update(float dt)
 
 void Menu::draw(RenderWindow &window)
 {
-	//window.resetGLStates();
 	mSfgui.Display(window);
 }
 
@@ -110,4 +109,11 @@ void Menu::setLabel(const sf::String label)
 void Menu::showWindow()
 {
 	mWindow->Show(true);
+}
+
+void Menu::disableContinueButton()
+{
+	mContinueButton->GetSignal(sfg::Widget::OnLeftClick).Disconnect(mContButtonId);
+	mContButtonId = 0;
+	mDesktop.SetProperty("Button#continue", "Color", sf::Color(0, 0, 0));
 }
