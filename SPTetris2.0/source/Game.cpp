@@ -152,34 +152,6 @@ void Game::handleinput(RenderWindow &window)
 				}
 			}
 		}
-		//else if(mEvent.key.code == Keyboard::Num1 && pressed)
-		//{
-		//	// Release the piece into invdiual blocks before creating a new one
-		//	// and drop it on to the map
-		//	if(mCurrentPiece != NULL)
-		//	{
-		//		mMap->drop(*mCurrentPiece);
-		//		mPieceBuilder->delPiece(mCurrentPiece);
-		//		mCurrentPiece = NULL;
-		//	}
-		//	mCurrentPiece = &mPieceBuilder->addPiece(PieceBuilder::Piece::I, mStart.x, mStart.y);
-		//	mCurrentPiece->setSpeed(speed * mLevel);
-		//}
-		//else if(mEvent.key.code == Keyboard::C && pressed)
-		//{
-		//	// Release the piece into invdiual blocks before creating a new one
-		//	// and drop it on to the map
-		//	if(mCurrentPiece != NULL)
-		//	{
-		//		mMap->drop(*mCurrentPiece);
-		//		mPieceBuilder->delPiece(mCurrentPiece);
-		//		mCurrentPiece = NULL;
-		//	}
-		//	// Create a new piece
-		//	mPiece = (PieceBuilder::Piece)(rand() % 7);
-		//	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-		//	mCurrentPiece->setSpeed(speed * mLevel);
-		//}
 		else if(mEvent.key.code == Keyboard::A && pressed)
 		{
 			// Move Piece to the left
@@ -513,8 +485,6 @@ void Game::createInfoLabels()
 
 	mDesktop.Add(mWindow);
 	mDesktop.SetProperty("Label#info", "FontSize", 20);
-	//mDesktop.SetProperty("Label#menu", "Color", sf::Color(0, 255, 0));
-	//mDesktop.SetProperty("Button#continue", "Color", sf::Color(0, 0, 0));
 	mDesktop.SetProperty("Label#level", "FontSize", 20);
 	mDesktop.SetProperty("Label#score", "FontSize", 20);
 }
