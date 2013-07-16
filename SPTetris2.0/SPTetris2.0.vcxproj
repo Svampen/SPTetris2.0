@@ -78,7 +78,7 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>C:\SDK\SFGUI-0.1.0_VC11\include;C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\include;C:\Users\Stefan\Documents\Visual Studio 2008\Projects\SPTetris2.0\SPTetris2.0\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SDK\SFGUI-0.1.0_VC11\include;C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\include;C:\Users\Stefan\Documents\GitHub\SPTetris2.0\SPTetris2.0\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -97,7 +97,8 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\bin\*.dll" "$(OutDir)"
-xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
+xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"
+xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
