@@ -12,7 +12,7 @@ Game::Game(int width, int height)
 	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(16, 20, 304, 124);
+	mMap = new Map(10, 20, 304, 124);
 
 	dt = 0.0f;
 	// 30 frames per second
@@ -152,7 +152,7 @@ void Game::handleinput(RenderWindow &window)
 				}
 			}
 		}
-		else if(mEvent.key.code == Keyboard::A && pressed)
+		else if((mEvent.key.code == Keyboard::A || mEvent.key.code == Keyboard::Left) && pressed)
 		{
 			// Move Piece to the left
 			if(mCurrentPiece != NULL)
@@ -168,7 +168,7 @@ void Game::handleinput(RenderWindow &window)
 					mSlidingTime.restart();
 			}
 		}
-		else if(mEvent.key.code == Keyboard::D && pressed)
+		else if((mEvent.key.code == Keyboard::D || mEvent.key.code == Keyboard::Right) && pressed)
 		{
 			// Move Piece to the right
 			if(mCurrentPiece != NULL)
@@ -184,7 +184,7 @@ void Game::handleinput(RenderWindow &window)
 					mSlidingTime.restart();
 			}
 		}
-		else if(mEvent.key.code == Keyboard::S && pressed)
+		else if((mEvent.key.code == Keyboard::S || mEvent.key.code == Keyboard::Down) && pressed)
 		{
 			// Move Piece faster downward
 			if(mCurrentPiece != NULL && speed * mLevel != maxspeed)
@@ -192,7 +192,7 @@ void Game::handleinput(RenderWindow &window)
 				mCurrentPiece->setSpeed(maxspeed);
 			}
 		}
-		else if(mEvent.key.code == Keyboard::S && released)
+		else if((mEvent.key.code == Keyboard::S || mEvent.key.code == Keyboard::Down) && released)
 		{
 			if(mCurrentPiece != NULL)
 			{
