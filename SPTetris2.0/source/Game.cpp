@@ -6,20 +6,20 @@
 
 #include "Game.h"
 
-Game::Game()
+Game::Game(int width, int height)
 {
 	mCurrentPiece = NULL;
 	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();
 
-	mMap = new Map(10, 15);
+	mMap = new Map(16, 20, 304, 124);
 
 	dt = 0.0f;
 	// 30 frames per second
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
 	mLevel = 1;
-	mMenu = new Menu(1280, 720);
+	mMenu = new Menu(width, height);
 	mStart = mMap->getStartPos();
 	mGameState = Meny;
 	mScore = 0;
@@ -462,7 +462,7 @@ void Game::createPiece()
 void Game::createInfoLabels()
 {
 	// Create the labels
-	mInfoHeadline = sfg::Label::Create("Score and Level");
+	mInfoHeadline = sfg::Label::Create("Info");
 	mInfoHeadline->SetId("info");
 	mLevelLabel = sfg::Label::Create("Level:");
 	mLevelLabel->SetId("level");
@@ -479,8 +479,8 @@ void Game::createInfoLabels()
 
 	mWindow->Add(mBox);
 	Vector2f size = Vector2f(100.0f, 100.0f);
-	float posX = 400.0f;
-	float posY = 20.0f;
+	float posX = 50.0f;
+	float posY = 124.0f;
 	mWindow->SetAllocation(FloatRect(Vector2f(posX, posY), size));
 
 	mDesktop.Add(mWindow);

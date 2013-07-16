@@ -6,11 +6,11 @@
 
 #include "Map.h"
 
-Map::Map(int width, int height)
+Map::Map(int width, int height, int startX, int startY)
 {
 	mWidth = width;
 	mHeight = height;
-	mOrigo = Vector2f(0.0f, 0.0f);
+	mOrigo = Vector2f(startX, startY);
 
 	mMap = new MapTile*[mWidth * mHeight];
 
@@ -21,14 +21,14 @@ Map::Map(int width, int height)
 			MapTile *m = new MapTile();
 			m->block = NULL;
 			m->tile = new Block(0.0f, 0.0f, "gfx/tile.png");
-			float x = ((Block*)m->tile)->getSize().x * j;
-			float y = ((Block*)m->tile)->getSize().y * i;
+			float x = startX + ((Block*)m->tile)->getSize().x * j;
+			float y = startY + ((Block*)m->tile)->getSize().y * i;
 			m->tile->moveX(x);
 			m->tile->moveY(y);
 			mMap[i*mWidth+j] = m;
 		}
 	}
-	mStart = Vector2f((mWidth * mMap[0]->tile->getSize().x) / 2.0f, mMap[0]->tile->getSize().y * 3);
+	mStart = Vector2f((startX + (mWidth * mMap[0]->tile->getSize().x) / 2.0f), startY + (mMap[0]->tile->getSize().y * 3));
 }
 
 Map::~Map()
@@ -63,18 +63,18 @@ void Map::drop(TetrisPiece &TPiece)
 	Vector2f pos3 = b3->getPosition();
 
 	//mMap[heightPos * width + widthPos]
-	mMap[(int)((pos0.y / size.y) * mWidth + (pos0.x / size.x))]->block = b0;
-	mMap[(int)((pos1.y / size.y) * mWidth + (pos1.x / size.x))]->block = b1;
-	mMap[(int)((pos2.y / size.y) * mWidth + (pos2.x / size.x))]->block = b2;
-	mMap[(int)((pos3.y / size.y) * mWidth + (pos3.x / size.x))]->block = b3;
+	mMap[(int)(((pos0.y - mOrigo.y) / size.y) * mWidth + ((pos0.x - mOrigo.x) / size.x))]->block = b0;
+	mMap[(int)(((pos1.y - mOrigo.y) / size.y) * mWidth + ((pos1.x - mOrigo.x) / size.x))]->block = b1;
+	mMap[(int)(((pos2.y - mOrigo.y) / size.y) * mWidth + ((pos2.x - mOrigo.x) / size.x))]->block = b2;
+	mMap[(int)(((pos3.y - mOrigo.y) / size.y) * mWidth + ((pos3.x - mOrigo.x) / size.x))]->block = b3;
 }
 
 bool Map::isValidMove(TetrisPiece &TPiece)
 {
 	Block *b0 = TPiece.getBlock0();
 	Vector2f size = b0->getSize();
-	float width = mWidth * size.x;
-	float height = mHeight * size.y;
+	float width = mOrigo.x + mWidth * size.x;
+	float height = mOrigo.y + mHeight * size.y;
 	Vector2f pos0 = b0->getPosition();
 	if((pos0.x + size.x > width || pos0.x < mOrigo.x) || 
 		(pos0.y + size.y > height))
@@ -105,19 +105,19 @@ void Map::syncPiece(TetrisPiece &TPiece)
 {
 	Block *b0 = TPiece.getBlock0();
 	Vector2f size = b0->getSize();
-	int i = (int)(b0->getPosition().y / size.y);
+	int i = (int)((b0->getPosition().y - mOrigo.y) / size.y);
 	b0->setPos(b0->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b1 = TPiece.getBlock1();
-	i = (int)(b1->getPosition().y / size.y);
+	i = (int)((b1->getPosition().y - mOrigo.y) / size.y);
 	b1->setPos(b1->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b2 = TPiece.getBlock2();
-	i = (int)(b2->getPosition().y / size.y);
+	i = (int)((b2->getPosition().y - mOrigo.y) / size.y);
 	b2->setPos(b2->getPosition().x, mOrigo.y + i * size.y);
 
 	Block *b3 = TPiece.getBlock3();
-	i = (int)(b3->getPosition().y / size.y);
+	i = (int)((b3->getPosition().y - mOrigo.y) / size.y);
 	b3->setPos(b3->getPosition().x, mOrigo.y + i * size.y);
 }
 
@@ -130,10 +130,10 @@ int* Map::checkCompleteRow(TetrisPiece &TPiece)
 
 	Vector2f size = TPiece.getBlock0()->getSize();
 
-	int row0 = (int)(pos0.y / size.y);
-	int row1 = (int)(pos1.y / size.y);
-	int row2 = (int)(pos2.y / size.y);
-	int row3 = (int)(pos3.y / size.y);
+	int row0 = (int)((pos0.y - mOrigo.y) / size.y);
+	int row1 = (int)((pos1.y - mOrigo.y) / size.y);
+	int row2 = (int)((pos2.y - mOrigo.y) / size.y);
+	int row3 = (int)((pos3.y - mOrigo.y) / size.y);
 
 	int *rows = new int[4];
 

@@ -11,7 +11,7 @@
 class Game
 {
 public:
-	Game();
+	Game(int width, int height);
 	~Game();
 
 	void loop(RenderWindow &window);

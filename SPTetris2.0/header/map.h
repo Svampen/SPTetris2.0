@@ -7,7 +7,7 @@
 class Map
 {
 public:
-	Map(int width, int height);
+	Map(int width, int height, int startX, int startY);
 	~Map();
 
 	void draw(RenderWindow *window);
@@ -43,6 +43,8 @@ private:
 	Vector2f mOrigo; 
 	int mWidth;
 	int mHeight;
+	int mStartX;
+	int mStartY;
 	Vector2f mStart;
 
 };
