@@ -34,6 +34,10 @@ Game::Game(int width, int height)
 Game::~Game()
 {
 	delete mMenu;
+	delete mCurrentPiece;
+	delete mMap;
+	delete mPieceBuilder;
+	mRows = NULL;
 }
 
 void Game::loop(RenderWindow &window)
