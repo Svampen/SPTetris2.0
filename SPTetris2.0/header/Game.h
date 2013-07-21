@@ -36,6 +36,8 @@ private:
 	float mSpeed;
 	int mLevel;
 	int mDrops;
+	int mCleared; 
+	int mSpeedLevel;
 
 	sf::Clock mSlidingTime;
 
@@ -63,6 +65,7 @@ private:
 	Label::Ptr mInfoHeadline;
 	Label::Ptr mScoreLabel;
 	Label::Ptr mLevelLabel;
+	Label::Ptr mSpeedLabel;
 	sfg::Window::Ptr mWindow;
 	sfg::Box::Ptr mBox;
 	sfg::Desktop mDesktop;

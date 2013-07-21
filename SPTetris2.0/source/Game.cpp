@@ -19,11 +19,14 @@ Game::Game(int width, int height)
 	maxFps = 1.0f / 30.0f;
 	mSpeed = 1.0f;
 	mLevel = 1;
+	mSpeedLevel = 1;
 	mMenu = new Menu(width, height);
 	mStart = mMap->getStartPos();
 	mGameState = Meny;
 	mScore = 0;
 	mDrops = 0;
+	mCleared = 0;
+	mSpeed = startspeed;
 	createInfoLabels();
 	mSlidingTime.restart();
 }
@@ -187,16 +190,16 @@ void Game::handleinput(RenderWindow &window)
 		else if((mEvent.key.code == Keyboard::S || mEvent.key.code == Keyboard::Down) && pressed)
 		{
 			// Move Piece faster downward
-			if(mCurrentPiece != NULL && speed * mLevel != maxspeed)
+			if(mCurrentPiece != NULL && mSpeed != slamspeed)
 			{
-				mCurrentPiece->setSpeed(maxspeed);
+				mCurrentPiece->setSpeed(slamspeed);
 			}
 		}
 		else if((mEvent.key.code == Keyboard::S || mEvent.key.code == Keyboard::Down) && released)
 		{
 			if(mCurrentPiece != NULL)
 			{
-				mCurrentPiece->setSpeed(speed * mLevel);
+				mCurrentPiece->setSpeed(mSpeed);
 			}
 				
 		}
@@ -211,17 +214,21 @@ void Game::handleinput(RenderWindow &window)
 
 void Game::update()
 {
-	// Update level and speed
-	if(mDrops >= dropsPerLevel * mLevel && mLevel < maxlevel)
+	// Update level
+	if(mCleared >= clearedrowsbeforelevel * mLevel && mLevel < maxlevel)
+	{
+		mCleared = 0;
+		mLevel++;
+	}
+	// Update speed
+	if(mDrops >= droppedbeforespeedinc && mSpeed < maxspeed)
 	{
 		mDrops = 0;
-		mLevel += 1;
+		mSpeed += incspeed;
+		mSpeedLevel++;
 		if(mCurrentPiece != NULL)
-			mCurrentPiece->setSpeed(speed * mLevel);
+			mCurrentPiece->setSpeed(mSpeed);
 	}
-	// Update info labels
-	mLevelLabel->SetText("Level:" + to_string(mLevel));
-	mScoreLabel->SetText("Score:" + to_string(mScore));
 	// Update Piece falling
 	if(mCurrentPiece != NULL)
 	{
@@ -294,7 +301,11 @@ void Game::update()
 		if(mRows->rows != NULL)
 			checkRows();
 	}
-
+	// Update info labels
+	mLevelLabel->SetText("Level:" + to_string(mLevel));
+	mScoreLabel->SetText("Score:" + to_string(mScore));
+	mSpeedLabel->SetText("Speed:" + to_string(mSpeedLevel));
+	
 	// Update info labels
 	mDesktop.Update(dt);
 }
@@ -348,8 +359,10 @@ void Game::clearing()
 			mPieceBuilder->freeBlocks(blist, mMap->getWidth());
 			// Increase score by cleared * level
 			mScore += cleared * mLevel;
-			// Remove one drops per cleared row
-			mDrops -= 1;
+			// Increase cleared rows
+			mCleared++;
+			// Remove two drops per cleared row
+			mDrops -= 2;
 			//TODO: Trigger particle system here
 		}
 	}
@@ -366,7 +379,7 @@ void Game::dropping()
 	}
 	else if(mRows->nrOfRows > 0 && mRows->deepest > 0)
 	{
-		//Move each row down 1 row per second
+		// Move each row down 1 row 
 		if(droppingClock.getElapsedTime().asMilliseconds() > 500)
 		{
 			int moveRowNr = -1;
@@ -438,7 +451,10 @@ void Game::reset()
 	mPieceBuilder->reset();
 	mScore = 0;
 	mDrops = 0;
-	mLevel = 0;
+	mLevel = 1;
+	mSpeedLevel = 1;
+	mCleared = 0;
+	mSpeed = startspeed;
 }
 
 void Game::createPiece()
@@ -446,7 +462,7 @@ void Game::createPiece()
 	// Create a new piece
 	mPiece = (PieceBuilder::Piece)(rand() % 7);
 	mCurrentPiece = &mPieceBuilder->addPiece(mPiece, mStart.x, mStart.y);
-	mCurrentPiece->setSpeed(speed * mLevel);
+	mCurrentPiece->setSpeed(mSpeed);
 	
 	// Check if new piece is colliding with another piece, 
 	// if so set mGameState to GameOver
@@ -468,6 +484,8 @@ void Game::createInfoLabels()
 	mLevelLabel->SetId("level");
 	mScoreLabel = sfg::Label::Create("Score:");
 	mScoreLabel->SetId("score");
+	mSpeedLabel = sfg::Label::Create("Speed:");
+	mSpeedLabel->SetId("speed");
 
 	// Create a window and add the label to it. Also set the window's title.
 	mWindow = sfg::Window::Create(0);
@@ -476,6 +494,7 @@ void Game::createInfoLabels()
 	mBox->Pack(mInfoHeadline);
 	mBox->Pack(mLevelLabel);
 	mBox->Pack(mScoreLabel);
+	mBox->Pack(mSpeedLabel);
 
 	mWindow->Add(mBox);
 	Vector2f size = Vector2f(100.0f, 100.0f);
@@ -487,4 +506,5 @@ void Game::createInfoLabels()
 	mDesktop.SetProperty("Label#info", "FontSize", 20);
 	mDesktop.SetProperty("Label#level", "FontSize", 20);
 	mDesktop.SetProperty("Label#score", "FontSize", 20);
+	mDesktop.SetProperty("Label#speed", "FontSize", 20);
 }
