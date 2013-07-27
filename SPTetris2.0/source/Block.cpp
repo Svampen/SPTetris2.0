@@ -97,16 +97,6 @@ void Block::moveY(float Y)
 	Sprite::setPosition(mX, mY);
 }
 
-void Block::onLostDevice()
-{
-
-}
-
-void Block::onResetDevice()
-{
-
-}
-
 void Block::draw()
 {
 

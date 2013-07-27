@@ -25,8 +25,6 @@ public:
 	void moveX(float X);
 	void moveY(float Y);
 	void draw();
-	void onResetDevice();
-	void onLostDevice();
 	float getX()
 	{
 		return mX;
