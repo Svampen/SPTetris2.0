@@ -2,6 +2,8 @@
 #define TETRIS_H
 
 #include <iostream>
+#include <SFGUI/SFGUI.hpp>
+#include <SFML/Graphics.hpp>
 using namespace std;
 using namespace sf;
 using namespace sfg;

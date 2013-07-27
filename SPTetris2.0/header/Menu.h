@@ -1,8 +1,6 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <SFGUI/SFGUI.hpp>
-#include <SFML/Graphics.hpp>
 #include "Tetris.h"
 
 
