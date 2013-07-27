@@ -14,17 +14,20 @@ ResourceMgr::~ResourceMgr()
 	delete mTexList;
 }
 
-void ResourceMgr::loadTexture(const string Texture)
+Texture ResourceMgr::getTexture(const string Texture)
 {
-	Tex *t = new Tex();
-	if(!t->mTex.loadFromFile(Texture))
+	for(int i=0; i<mTexList->getSize(); i++)
 	{
-		// Error loading texture
+		if(mTexList->getAt(i)->Texture == Texture)
+			return mTexList->getAt(i)->mTex;
 	}
-	t->Texture = Texture;
-}
 
-bool ResourceMgr::isTextureLoaded(const string Texture)
-{
-	return false;
+	Tex *t = new Tex();
+	if(t->mTex.loadFromFile(Texture))
+	{
+		t->Texture = Texture;
+		mTexList->addFirst(t);
+		return t->mTex;
+	}
+	// Error loading/finding texture
 }

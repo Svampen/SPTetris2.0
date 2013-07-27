@@ -13,8 +13,6 @@ public:
 	ResourceMgr();
 	~ResourceMgr();
 
-	void loadTexture(const string Texture);
-	bool isTextureLoaded(const string Texture);
 	Texture getTexture(const string Texture);
 
 	struct Tex
