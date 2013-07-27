@@ -42,20 +42,6 @@ JPiece::~JPiece()
 	delete mBlock2;
 	delete mBlock3;
 }
-void JPiece::onLostDevice()
-{
-	mBlock0->onLostDevice();
-	mBlock1->onLostDevice();
-	mBlock2->onLostDevice();
-	mBlock3->onLostDevice();
-}
-void JPiece::onResetDevice()
-{
-	mBlock0->onResetDevice();
-	mBlock1->onResetDevice();
-	mBlock2->onResetDevice();
-	mBlock3->onResetDevice();
-}
 void JPiece::update(float dt)
 {
 }

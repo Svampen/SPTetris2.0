@@ -42,20 +42,6 @@ SPiece::~SPiece()
 	delete mBlock2;
 	delete mBlock3;
 }
-void SPiece::onLostDevice()
-{
-	mBlock0->onLostDevice();
-	mBlock1->onLostDevice();
-	mBlock2->onLostDevice();
-	mBlock3->onLostDevice();
-}
-void SPiece::onResetDevice()
-{
-	mBlock0->onResetDevice();
-	mBlock1->onResetDevice();
-	mBlock2->onResetDevice();
-	mBlock3->onResetDevice();
-}
 void SPiece::update(float dt)
 {
 }

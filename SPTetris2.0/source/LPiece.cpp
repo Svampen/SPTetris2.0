@@ -43,20 +43,6 @@ LPiece::~LPiece()
 	delete mBlock2;
 	delete mBlock3;
 }
-void LPiece::onLostDevice()
-{
-	mBlock0->onLostDevice();
-	mBlock1->onLostDevice();
-	mBlock2->onLostDevice();
-	mBlock3->onLostDevice();
-}
-void LPiece::onResetDevice()
-{
-	mBlock0->onResetDevice();
-	mBlock1->onResetDevice();
-	mBlock2->onResetDevice();
-	mBlock3->onResetDevice();
-}
 void LPiece::update(float dt)
 {
 }

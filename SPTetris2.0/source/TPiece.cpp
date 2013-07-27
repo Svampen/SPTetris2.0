@@ -42,20 +42,6 @@ TPiece::~TPiece()
 	delete mBlock2;
 	delete mBlock3;
 }
-void TPiece::onLostDevice()
-{
-	mBlock0->onLostDevice();
-	mBlock1->onLostDevice();
-	mBlock2->onLostDevice();
-	mBlock3->onLostDevice();
-}
-void TPiece::onResetDevice()
-{
-	mBlock0->onResetDevice();
-	mBlock1->onResetDevice();
-	mBlock2->onResetDevice();
-	mBlock3->onResetDevice();
-}
 void TPiece::update(float dt)
 {
 }
