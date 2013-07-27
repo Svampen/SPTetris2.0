@@ -127,5 +127,23 @@
     <Image Include="gfx\tile.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="gfx\blue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gfx\green.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gfx\orange.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gfx\purple.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gfx\red.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gfx\yellow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

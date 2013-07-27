@@ -140,8 +140,14 @@ xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
     <ClInclude Include="header\ZPiece.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="gfx\blue.png" />
     <Image Include="gfx\cyan.png" />
+    <Image Include="gfx\green.png" />
+    <Image Include="gfx\orange.png" />
+    <Image Include="gfx\purple.png" />
+    <Image Include="gfx\red.png" />
     <Image Include="gfx\tile.png" />
+    <Image Include="gfx\yellow.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
