@@ -113,6 +113,7 @@ xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
     <ClCompile Include="source\OPiece.cpp" />
     <ClCompile Include="source\ParticleSystem.cpp" />
     <ClCompile Include="source\PieceBuilder.cpp" />
+    <ClCompile Include="source\ResourceMgr.cpp" />
     <ClCompile Include="source\SPiece.cpp" />
     <ClCompile Include="source\TetisPiece.cpp" />
     <ClCompile Include="source\TPiece.cpp" />
@@ -131,6 +132,7 @@ xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
     <ClInclude Include="header\OPiece.h" />
     <ClInclude Include="header\ParticleSystem.h" />
     <ClInclude Include="header\PieceBuilder.h" />
+    <ClInclude Include="header\ResourceMgr.h" />
     <ClInclude Include="header\SPiece.h" />
     <ClInclude Include="header\Tetris.h" />
     <ClInclude Include="header\TetrisPiece.h" />
