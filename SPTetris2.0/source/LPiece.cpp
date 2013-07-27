@@ -20,6 +20,10 @@ LPiece::LPiece(float X, float Y)
 	mBlock1 = new Block(X, Y);
 	mBlock2 = new Block(X, Y);
 	mBlock3 = new Block(X, Y);
+	mBlock0->setTex("gfx/orange.png");
+	mBlock1->setTex("gfx/orange.png");
+	mBlock2->setTex("gfx/orange.png");
+	mBlock3->setTex("gfx/orange.png");
 	mOldRotationStage = 1;
 	mRotationStage = 1;
 	setPos(X, Y);
@@ -31,6 +35,10 @@ LPiece::LPiece(float X, float Y, Block *b0, Block *b1, Block *b2, Block *b3)
 	mBlock1 = b1;
 	mBlock2 = b2;
 	mBlock3 = b3;
+	mBlock0->setTex("gfx/orange.png");
+	mBlock1->setTex("gfx/orange.png");
+	mBlock2->setTex("gfx/orange.png");
+	mBlock3->setTex("gfx/orange.png");
 	mOldRotationStage = 1;
 	mRotationStage = 1;
 	setPos(X, Y);
