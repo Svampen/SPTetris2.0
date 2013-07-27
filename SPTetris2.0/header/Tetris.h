@@ -4,6 +4,8 @@
 #include <iostream>
 #include <SFGUI/SFGUI.hpp>
 #include <SFML/Graphics.hpp>
+#include "ResourceMgr.h"
+
 using namespace std;
 using namespace sf;
 using namespace sfg;

@@ -26,11 +26,7 @@ Block::~Block()
 
 void Block::initBlock(float X, float Y, const std::string Texture)
 {
-	if(!mTex.loadFromFile(Texture))
-	{
-		//error
-	}
-	setTexture(mTex);
+	setTexture(RMgr->getTexture(Texture));
 	FloatRect r = getGlobalBounds();
 	Vector2f size(26.0f, 26.0f);
 	mScaleX = size.x / r.width;

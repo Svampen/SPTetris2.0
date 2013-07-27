@@ -8,6 +8,7 @@
 
 Game::Game(int width, int height)
 {
+	RMgr = new ResourceMgr();
 	mCurrentPiece = NULL;
 	mRows = new Rows();
 	mPieceBuilder = new PieceBuilder();

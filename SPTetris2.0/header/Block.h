@@ -1,9 +1,8 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <SFML/Graphics.hpp>
-
-using namespace sf;
+#include "ResourceMgr.h"
+#include "Tetris.h"
 
 class Block : public Sprite
 {
