@@ -24,6 +24,21 @@ Block::~Block()
 {
 }
 
+void Block::initBlock(float X, float Y)
+{
+	FloatRect r = getGlobalBounds();
+	Vector2f size(26.0f, 26.0f);
+	mScaleX = size.x / r.width;
+	mScaleY = size.y / r.height;
+	mX = X;
+	mY = Y;
+	mOldX = X;
+	mOldY = Y;
+	Sprite::scale(mScaleX, mScaleY);
+	mCenter = false;
+	mSize = Vector2f(getGlobalBounds().width, getGlobalBounds().height);
+}
+
 void Block::initBlock(float X, float Y, const std::string Texture)
 {
 	setTexture(RMgr->getTexture(Texture));
@@ -35,12 +50,15 @@ void Block::initBlock(float X, float Y, const std::string Texture)
 	mY = Y;
 	mOldX = X;
 	mOldY = Y;
-	// Should be determined by size of resolution
 	Sprite::scale(mScaleX, mScaleY);
 	mCenter = false;
 	mSize = Vector2f(getGlobalBounds().width, getGlobalBounds().height);
 }
 
+void Block::setTex(const std::string Texture)
+{
+	setTexture(RMgr->getTexture(Texture));
+}
 
 /* Set a absolute position, used for initial position of block
 */

@@ -19,6 +19,7 @@ public:
 	Block(float X, float Y);
 	~Block();
 	
+	void setTex(const std::string Texture);
 	void setPos(float X, float Y);
 	void move(float X, float Y);
 	void move(DIR Dir);
@@ -46,7 +47,7 @@ public:
 	Vector2f getSize();
 
 private:
-
+	void initBlock(float X, float Y);
 	void initBlock(float X, float Y, const std::string Texture);
 
 	int mType;
