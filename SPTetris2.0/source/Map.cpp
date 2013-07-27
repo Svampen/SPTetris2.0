@@ -10,7 +10,7 @@ Map::Map(int width, int height, int startX, int startY)
 {
 	mWidth = width;
 	mHeight = height;
-	mOrigo = Vector2f(startX, startY);
+	mOrigo = Vector2f((float)startX, (float)startY);
 
 	mMap = new MapTile*[mWidth * mHeight];
 
