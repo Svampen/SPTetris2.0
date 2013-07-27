@@ -13,7 +13,7 @@ public:
 	ResourceMgr();
 	~ResourceMgr();
 
-	Texture getTexture(const string Texture);
+	Texture& getTexture(const string Texture);
 
 	struct Tex
 	{
@@ -27,4 +27,6 @@ private:
 
 	List<Tex> *mTexList;
 };
+
+extern ResourceMgr *RMgr;
 #endif

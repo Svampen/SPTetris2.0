@@ -1,5 +1,7 @@
 #include "ResourceMgr.h"
 
+ResourceMgr *RMgr = 0;
+
 ResourceMgr::ResourceMgr()
 {
 	mTexList = new List<Tex>();
@@ -14,7 +16,7 @@ ResourceMgr::~ResourceMgr()
 	delete mTexList;
 }
 
-Texture ResourceMgr::getTexture(const string Texture)
+Texture& ResourceMgr::getTexture(const string Texture)
 {
 	for(int i=0; i<mTexList->getSize(); i++)
 	{
@@ -29,5 +31,5 @@ Texture ResourceMgr::getTexture(const string Texture)
 		mTexList->addFirst(t);
 		return t->mTex;
 	}
-	// Error loading/finding texture
+	return t->mTex;
 }
