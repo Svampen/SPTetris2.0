@@ -71,7 +71,9 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\bin\*.dll" "$(OutDir)"
-xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
+xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"
+xcopy /y /i "$(MSBuildProjectDirectory)\gfx\*" "$(OutDir)gfx"
+xcopy /y /i "$(MSBuildProjectDirectory)\sound\*" "$(OutDir)sound"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,7 +100,8 @@ xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"</Command>
     <PostBuildEvent>
       <Command>xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\extlibs\SFML\bin\*.dll" "$(OutDir)"
 xcopy /y "C:\SDK\SFGUI-0.1.0_VC11\bin\*.dll" "$(OutDir)"
-xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
+xcopy /y /i "$(MSBuildProjectDirectory)\gfx\*" "$(OutDir)gfx"
+xcopy /y /i "$(MSBuildProjectDirectory)\sound\*" "$(OutDir)sound"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
