@@ -36,7 +36,7 @@ Game::Game(int width, int height)
 		//Error
 	}
 	mMusic.setLoop(true);
-	mMusic.setVolume(50.0f);
+	mMusic.setVolume(0.0f);
 }
 
 Game::~Game()
@@ -274,9 +274,6 @@ void Game::update()
 				// Use current piece as a starting point for check if any row has been
 				// completed
 				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
-				mRows->cleared = new bool[];
-				for(int i=0; i<4; i++)
-					mRows->cleared[i] = false;
 				mPieceBuilder->delPiece(mCurrentPiece);
 				mCurrentPiece = NULL;
 				// Score
@@ -306,9 +303,6 @@ void Game::update()
 				// Use current piece as a starting point for check if any row has been
 				// completed
 				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
-				mRows->cleared = new bool[];
-				for(int i=0; i<4; i++)
-					mRows->cleared[i] = false;
 				mPieceBuilder->delPiece(mCurrentPiece);
 				mCurrentPiece = NULL;
 				// Score
@@ -402,48 +396,35 @@ void Game::dropping()
 		if(droppingClock.getElapsedTime().asMilliseconds() > 500)
 		{
 			int moveRowNr = -1;
-			bool clearedRow;
-			int prevEmptyRow = -1;
+			// Loop over every row from deepest
 			for(int i=mRows->deepest; i>=0; i--)
 			{
-				clearedRow = false;
+				//Find the first cleared row and break
 				for(int j=0; j<4; j++)
 				{
-					// Check if row exists as a cleared row
-					if(i == mRows->rows[j])
+					if(mRows->rows[j] == i)
 					{
-						clearedRow = true;
-						prevEmptyRow = j;
+						//Found deepest cleared row
+						mRows->rows[j] = -1;
+						moveRowNr = i;
 						break;
 					}
-
 				}
-				// If current row isn't cleared and
-				// no other row has been set as deepest noncleared row
-				// then set it as such
-				if(!clearedRow && moveRowNr == -1)
-				{
-					if(prevEmptyRow != -1)
-						// Change status on previously empty
-						// row to not empty anymore as it will be
-						// filled with blocks
-						mRows->rows[prevEmptyRow] = -1;
-					moveRowNr = i;
-				}
-				// If current row is empty and a noncleared
-				// row has been set then this row has moved 
-				// down a row
-				else if(clearedRow && moveRowNr != -1)
-				{
-					mRows->rows[prevEmptyRow]--;
-				}
+				if(moveRowNr != -1)
+					break;
 			}
-
+			// Move all rows down 1 starting with moveRowNr
 			if(moveRowNr != -1)
 			{
-				mMap->moveBlocks(moveRowNr);
+				mMap->moveBlocks(moveRowNr-1);
 				mRows->nrOfRows--;
 				droppingClock.restart();
+				//Update remaing cleared rows which has now moved one row down
+				for(int i=0; i<4; i++)
+				{
+					if(mRows->rows[i] != -1)
+						mRows->rows[i]++;
+				}
 			}
 		}
 	}
@@ -452,7 +433,6 @@ void Game::dropping()
 		// Go back to playing the game
 		mGameState = Playing;
 		mRows->rows = NULL;
-		mRows->cleared = NULL;
 		mRows->deepest = -1;
 		mRows->nrOfRows = 0;
 		createPiece();

@@ -52,7 +52,6 @@ private:
 	struct Rows
 	{
 		int *rows;
-		bool *cleared;
 		int nrOfRows;
 		int deepest;
 	};
