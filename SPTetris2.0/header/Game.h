@@ -7,6 +7,7 @@
 #include "PieceBuilder.h"
 #include "Map.h"
 #include "Menu.h"
+#include <SFML/Audio/Music.hpp>
 
 class Game
 {
@@ -69,6 +70,8 @@ private:
 	sfg::Window::Ptr mWindow;
 	sfg::Box::Ptr mBox;
 	sfg::Desktop mDesktop;
+
+	sf::Music mMusic;
 };
 
 #endif

@@ -30,10 +30,17 @@ Game::Game(int width, int height)
 	mSpeed = startspeed;
 	createInfoLabels();
 	mSlidingTime.restart();
+	if(!mMusic.openFromFile("sound/Tetris.ogg"))
+	{
+		cout << "Error loading sound";
+		//Error
+	}
+	mMusic.setLoop(true);
 }
 
 Game::~Game()
 {
+	mMusic.stop();
 	delete mMenu;
 	delete mCurrentPiece;
 	delete mMap;
@@ -210,6 +217,8 @@ void Game::handleinput(RenderWindow &window)
 		}
 		else if(mEvent.key.code == Keyboard::Escape && pressed)
 		{
+			// pause music
+			mMusic.pause();
 			mGameState = Meny;
 			mMenu->setLabel("Paused");
 			mMenu->showWindow();
@@ -219,6 +228,10 @@ void Game::handleinput(RenderWindow &window)
 
 void Game::update()
 {
+	// Check if music is playing
+	if((mMusic.getStatus() == mMusic.Paused || mMusic.getStatus() == mMusic.Stopped) && 
+		mGameState != Meny)
+		mMusic.play();
 	// Update level
 	if(mCleared >= clearedrowsbeforelevel * mLevel && mLevel < maxlevel)
 	{
@@ -460,6 +473,7 @@ void Game::reset()
 	mSpeedLevel = 1;
 	mCleared = 0;
 	mSpeed = startspeed;
+	mMusic.play();
 }
 
 void Game::createPiece()
@@ -473,6 +487,7 @@ void Game::createPiece()
 	// if so set mGameState to GameOver
 	if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 	{
+		mMusic.stop();
 		mGameState = GameOver;
 		mMenu->setLabel("Game Over");
 		mMenu->showWindow();

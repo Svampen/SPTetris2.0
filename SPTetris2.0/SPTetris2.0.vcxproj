@@ -149,6 +149,12 @@ xcopy /y "$(MSBuildProjectDirectory)\gfx" "$(OutDir)\gfx"</Command>
     <Image Include="gfx\tile.png" />
     <Image Include="gfx\yellow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\Tetris-Theme-Original.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sound\Tetris.ogg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
