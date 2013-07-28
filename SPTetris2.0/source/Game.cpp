@@ -8,6 +8,7 @@
 
 Game::Game(int width, int height)
 {
+	//Initialise everything
 	RMgr = new ResourceMgr();
 	mCurrentPiece = NULL;
 	mRows = new Rows();
@@ -30,17 +31,14 @@ Game::Game(int width, int height)
 	mSpeed = startspeed;
 	createInfoLabels();
 	mSlidingTime.restart();
-	if(!mMusic.openFromFile("sound/Tetris.ogg"))
-	{
-		cout << "Error loading sound";
-		//Error
-	}
+	mMusic.openFromFile("sound/Tetris.ogg");
 	mMusic.setLoop(true);
 	mMusic.setVolume(0.0f);
 }
 
 Game::~Game()
 {
+	// Cleanup
 	mMusic.stop();
 	delete mMenu;
 	delete mCurrentPiece;
@@ -71,11 +69,6 @@ void Game::loop(RenderWindow &window)
 		case Playing:
 			// handle input
 			handleinput(window);
-			//s temp
-			cout << "Score:" << mScore << "\n";
-			cout << "Level:" << mLevel << "\n";
-			cout << "Drops:" << mDrops << "\n";
-			//e temp
 			// update
 			update();
 			// draw
@@ -92,12 +85,6 @@ void Game::loop(RenderWindow &window)
 			// handle input
 			// update
 			dropping();
-			// draw
-			draw(window);
-			break;
-		case Paused:
-			// handle input
-			// update
 			// draw
 			draw(window);
 			break;
@@ -138,7 +125,6 @@ void Game::handleinput(RenderWindow &window)
 		switch(mEvent.type)
 		{
 		case Event::Closed:
-			// Delete all resources
 			window.close();
 			break;
 		case Event::KeyPressed:
@@ -150,9 +136,9 @@ void Game::handleinput(RenderWindow &window)
 		default:
 			break;
 		}
-
 		if(mEvent.key.code == Keyboard::Space && pressed)
 		{
+			// Rotate piece
 			if(mCurrentPiece != NULL)
 			{
 				mCurrentPiece->rotate();
@@ -210,6 +196,7 @@ void Game::handleinput(RenderWindow &window)
 		}
 		else if((mEvent.key.code == Keyboard::S || mEvent.key.code == Keyboard::Down) && released)
 		{
+			// Reset movement speed downwards
 			if(mCurrentPiece != NULL)
 			{
 				mCurrentPiece->setSpeed(mSpeed);
@@ -218,7 +205,7 @@ void Game::handleinput(RenderWindow &window)
 		}
 		else if(mEvent.key.code == Keyboard::Escape && pressed)
 		{
-			// pause music
+			// Pause game/music and enter menu
 			mMusic.pause();
 			mGameState = Meny;
 			mMenu->setLabel("Paused");
@@ -229,9 +216,8 @@ void Game::handleinput(RenderWindow &window)
 
 void Game::update()
 {
-	// Check if music is playing
-	if((mMusic.getStatus() == mMusic.Paused || mMusic.getStatus() == mMusic.Stopped) && 
-		mGameState != Meny)
+	// Check if music is playing, if not start it
+	if((mMusic.getStatus() == mMusic.Paused || mMusic.getStatus() == mMusic.Stopped) && mGameState != Meny)
 		mMusic.play();
 	// Update level
 	if(mCleared >= clearedrowsbeforelevel * mLevel && mLevel < maxlevel)
@@ -255,15 +241,15 @@ void Game::update()
 		// Is the piece colliding with another block?
 		if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 		{
-			// Move back to old position and sync with map
+			// Move piece back to old position and sync with map
 			mCurrentPiece->revertMove();
 			mMap->syncPiece(*mCurrentPiece);
-			// Move piece one tile at a time until collision
+			// Move piece one row at a time until collision
 			while(mPieceBuilder->isValidMove(*mCurrentPiece))
 			{
 				mCurrentPiece->move(Block::DOWN);
 			}
-			// use old pos
+			// Collision as occurred so use old position
 			mCurrentPiece->revertMove();
 			// Should the piece be released or is sliding still allowed?
 			if(mSlidingTime.getElapsedTime().asMilliseconds() > 500)
@@ -271,12 +257,12 @@ void Game::update()
 				// Release the piece into invdiual blocks before creating a new one
 				// and drop it on to the map
 				mMap->drop(*mCurrentPiece);
-				// Use current piece as a starting point for check if any row has been
+				// Use current piece as a starting point for checking if any row has been
 				// completed
 				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
 				mPieceBuilder->delPiece(mCurrentPiece);
 				mCurrentPiece = NULL;
-				// Score
+				// Update Score
 				mScore += dropped * mLevel;
 				mDrops += 1;
 			}
@@ -287,12 +273,12 @@ void Game::update()
 			// Move back to last position and sync with map
 			mCurrentPiece->revertMove();
 			mMap->syncPiece(*mCurrentPiece);
-			// move piece one tile at a time until last outside map then
+			// Move piece one row at a time until it's below the map
 			while(mMap->isValidMove(*mCurrentPiece))
 			{
 				mCurrentPiece->move(Block::DOWN);
 			}
-			// use old pos
+			// Piece is outside the map so use old position
 			mCurrentPiece->revertMove();
 			// Should the piece be released or is sliding still allowed?
 			if(mSlidingTime.getElapsedTime().asMilliseconds() > 500)
@@ -300,12 +286,12 @@ void Game::update()
 				// Release the piece into invdiual blocks before creating a new one
 				// and drop it on to the map
 				mMap->drop(*mCurrentPiece);
-				// Use current piece as a starting point for check if any row has been
+				// Use current piece as a starting point for checking if any row has been
 				// completed
 				mRows->rows = mMap->checkCompleteRow(*mCurrentPiece);
 				mPieceBuilder->delPiece(mCurrentPiece);
 				mCurrentPiece = NULL;
-				// Score
+				// Update Score
 				mScore += dropped * mLevel;
 				mDrops += 1;
 			}
@@ -318,15 +304,11 @@ void Game::update()
 	mLevelLabel->SetText("Level:" + to_string(mLevel));
 	mScoreLabel->SetText("Score:" + to_string(mScore));
 	mSpeedLabel->SetText("Speed:" + to_string(mSpeedLevel));
-	
-	// Update info labels
 	mDesktop.Update(dt);
 }
 
 void Game::draw(RenderWindow &window)
 {
-	
-	
 	// Draw info labels
 	mSfgui.Display(window);
 
@@ -334,8 +316,10 @@ void Game::draw(RenderWindow &window)
 	mMap->draw(&window);
 	if(mCurrentPiece)
 	{
+		// Draw current piece
 		mCurrentPiece->draw(&window);
 	}
+	// Draw released blocks
 	mPieceBuilder->draw(&window);
 }
 
@@ -345,6 +329,7 @@ void Game::checkRows()
 	mRows->deepest = -1;
 	for(int i=0;i<4;i++)
 	{
+		// Find the deepst cleared row and the number of cleared rows
 		if(mRows->rows[i] != -1)
 		{
 			if(mRows->rows[i] > mRows->deepest)
@@ -352,9 +337,10 @@ void Game::checkRows()
 			mRows->nrOfRows++;
 		}
 	}
+	// If there are cleared rows then change game state to clearing
 	if(mRows->nrOfRows > 0)
 		mGameState = Clearing;
-	else
+	else // If no cleared rows are found, create a new piece and continue the game
 	{
 		mRows->rows = NULL;
 		createPiece();
@@ -363,6 +349,7 @@ void Game::checkRows()
 
 void Game::clearing()
 {
+	// Remove all cleared rows from the map
 	Block** blist;
 	for(int i=0; i<4; i++)
 	{
@@ -376,7 +363,6 @@ void Game::clearing()
 			mCleared++;
 			// Remove two drops per cleared row
 			mDrops -= 2;
-			//TODO: Trigger particle system here
 		}
 	}
 	droppingClock.restart();
@@ -399,27 +385,27 @@ void Game::dropping()
 			// Loop over every row from deepest
 			for(int i=mRows->deepest; i>=0; i--)
 			{
-				//Find the first cleared row and break
+				// Find the first cleared row and break
 				for(int j=0; j<4; j++)
 				{
 					if(mRows->rows[j] == i)
 					{
-						//Found deepest cleared row
+						// Found deepest cleared row
 						mRows->rows[j] = -1;
-						moveRowNr = i;
+						moveRowNr = i - 1;
 						break;
 					}
 				}
 				if(moveRowNr != -1)
 					break;
 			}
-			// Move all rows down 1 starting with moveRowNr
+			// Move all rows down one row starting with moveRowNr
 			if(moveRowNr != -1)
 			{
-				mMap->moveBlocks(moveRowNr-1);
+				mMap->moveBlocks(moveRowNr);
 				mRows->nrOfRows--;
 				droppingClock.restart();
-				//Update remaing cleared rows which has now moved one row down
+				// Update remaing cleared rows which has now moved one row down
 				for(int i=0; i<4; i++)
 				{
 					if(mRows->rows[i] != -1)
@@ -441,6 +427,7 @@ void Game::dropping()
 
 void Game::reset()
 {
+	// Reset all variables for a new game
 	if(mCurrentPiece != NULL)
 	{
 		mPieceBuilder->delPiece(mCurrentPiece);
@@ -465,7 +452,7 @@ void Game::createPiece()
 	mCurrentPiece->setSpeed(mSpeed);
 	
 	// Check if new piece is colliding with another piece, 
-	// if so set mGameState to GameOver
+	// if so set game state to GameOver
 	if(!mPieceBuilder->isValidMove(*mCurrentPiece))
 	{
 		mMusic.stop();
@@ -488,7 +475,7 @@ void Game::createInfoLabels()
 	mSpeedLabel = sfg::Label::Create("Speed:");
 	mSpeedLabel->SetId("speed");
 
-	// Create a window and add the label to it. Also set the window's title.
+	// Create a window
 	mWindow = sfg::Window::Create(0);
 	mBox = sfg::Box::Create(sfg::Box::VERTICAL);
 	mBox->SetSpacing(1.0f);
