@@ -147,11 +147,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="sound\Tetris-Theme-Original.mp3">
-      <Filter>Resource Files</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="sound\Tetris.ogg">
       <Filter>Resource Files</Filter>
     </None>
