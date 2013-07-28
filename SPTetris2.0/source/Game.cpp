@@ -33,7 +33,7 @@ Game::Game(int width, int height)
 	mSlidingTime.restart();
 	mMusic.openFromFile("sound/Tetris.ogg");
 	mMusic.setLoop(true);
-	mMusic.setVolume(0.0f);
+	mMusic.setVolume(50.0f);
 }
 
 Game::~Game()
