@@ -36,6 +36,7 @@ Game::Game(int width, int height)
 		//Error
 	}
 	mMusic.setLoop(true);
+	mMusic.setVolume(50.0f);
 }
 
 Game::~Game()
