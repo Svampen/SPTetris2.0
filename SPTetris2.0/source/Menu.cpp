@@ -21,7 +21,7 @@ Menu::Menu(int Width, int Height)
 	mQuitGameButton = sfg::Button::Create("Quit");
 	mQuitGameButton->SetId("quit");
 	mQuitGameButton->GetSignal(sfg::Widget::OnLeftClick).Connect(&Menu::OnQuitClick, this);
-	// Create a window and add the label to it. Also set the window's title.
+	// Create a window
 	mWindow = sfg::Window::Create(0);
 	mBox = sfg::Box::Create(sfg::Box::VERTICAL);
 	mBox->SetSpacing(1.0f);

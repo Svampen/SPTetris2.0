@@ -62,7 +62,6 @@ void Map::drop(TetrisPiece &TPiece)
 	Vector2f pos2 = b2->getPosition();
 	Vector2f pos3 = b3->getPosition();
 
-	//mMap[heightPos * width + widthPos]
 	mMap[(int)(((pos0.y - mOrigo.y) / size.y) * mWidth + ((pos0.x - mOrigo.x) / size.x))]->block = b0;
 	mMap[(int)(((pos1.y - mOrigo.y) / size.y) * mWidth + ((pos1.x - mOrigo.x) / size.x))]->block = b1;
 	mMap[(int)(((pos2.y - mOrigo.y) / size.y) * mWidth + ((pos2.x - mOrigo.x) / size.x))]->block = b2;
@@ -103,6 +102,7 @@ bool Map::isValidMove(TetrisPiece &TPiece)
 
 void Map::syncPiece(TetrisPiece &TPiece)
 {
+	// Move TPiece to exact match with maps tile layout based on it's current location
 	Block *b0 = TPiece.getBlock0();
 	Vector2f size = b0->getSize();
 	int i = (int)((b0->getPosition().y - mOrigo.y) / size.y);
@@ -123,6 +123,7 @@ void Map::syncPiece(TetrisPiece &TPiece)
 
 int* Map::checkCompleteRow(TetrisPiece &TPiece)
 {
+	// Check if rows are complete or not based on TPiece
 	Vector2f pos0 = TPiece.getBlock0()->getPosition();
 	Vector2f pos1 = TPiece.getBlock1()->getPosition();
 	Vector2f pos2 = TPiece.getBlock2()->getPosition();
@@ -156,6 +157,7 @@ int* Map::checkCompleteRow(TetrisPiece &TPiece)
 
 int Map::rowComplete(int row)
 {
+	// Check if a row is complete or not
 	for(int i=0; i<mWidth; i++)
 	{
 		if(mMap[row * mWidth + i]->block == NULL)
@@ -190,6 +192,7 @@ Vector2f Map::getStartPos()
 
 void Map::moveBlocks(int startRow)
 {
+	// Move all blocks down one row starting from startRow
 	for(int i=startRow; i>=0; i--)
 	{
 		for(int j=mWidth-1; j>=0; j--)
